@@ -1,8 +1,16 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import (
+    MetaData,
+    Table,
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+)
 from sqlalchemy.orm import relationship
+from apps.sql_app.database import Base
 
-from .database import Base
-
+# metadata_obj = MetaData()
 
 class User(Base):
     __tablename__ = "users"
@@ -24,3 +32,21 @@ class Item(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="items")
+
+# user_table = Table(
+#     "users",
+#     metadata_obj,
+#     Column("id", Integer, primary_key=True, index=True, autoincrement=True),
+#     Column("email", String, unique=True, index=True),
+#     Column("hashed_password", String),
+#     Column("is_active", Boolean, default=True),
+# )
+
+# item_table = Table(
+#     "items",
+#     metadata_obj,
+#     Column("id", Integer, primary_key=True, index=True, autoincrement=True),
+#     Column("title", String, index=True),
+#     Column("description", String, index=True),
+#     Column("owner_id", Integer, ForeignKey("users.id")),
+# )

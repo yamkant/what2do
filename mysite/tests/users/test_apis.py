@@ -24,17 +24,11 @@ def override_get_db():
     finally:
         db.close()
 
-@pytest.fixture()
-def test_db(test_db):
-    models.Base.metadata.create_all(bind=engine)
-    yield
-    models.Base.metadata.drop_all(bind=engine)
-
 app.dependency_overrides[apis.get_db] = override_get_db
 
 client = TestClient(app)
 
-def test_create_user():
+def test_create_user(test_db):
     response = client.post(
         "/users/",
         json={"email": "dev.yamkim@gmail.com", "password": "test123!"},
