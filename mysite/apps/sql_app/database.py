@@ -14,23 +14,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# def get_engine():
-#     db_engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
-
-#     if not database_exists(db_engine.url):
-#         create_database(db_engine.url)
-
-#     return db_engine
-
-
-# engine = get_engine()
-# SessionFactory = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
-
-
-# @contextmanager
-# def get_db_session():
-#     db = SessionFactory()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

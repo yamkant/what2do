@@ -28,6 +28,16 @@ app.dependency_overrides[apis.get_db] = override_get_db
 
 client = TestClient(app)
 
+
+def test_read_item(test_db):
+    response = client.get("/users/", headers={"X-Token": "coneofsilence"})
+    assert response.status_code == 200
+    # assert response.json() == {
+    #     "id": "foo",
+    #     "title": "Foo",
+    #     "description": "There goes my hero",
+    # }
+
 def test_create_user(test_db):
     response = client.post(
         "/users/",
@@ -48,14 +58,6 @@ def test_create_user(test_db):
     # assert data["id"] == user_id
 
 
-# def test_read_item():
-#     response = client.get("/items/foo", headers={"X-Token": "coneofsilence"})
-#     assert response.status_code == 200
-#     assert response.json() == {
-#         "id": "foo",
-#         "title": "Foo",
-#         "description": "There goes my hero",
-#     }
 
 
 # def test_read_item_bad_token():
