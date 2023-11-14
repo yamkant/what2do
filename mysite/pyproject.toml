@@ -13,6 +13,7 @@ sqlalchemy = "^2.0.23"
 pytest = "^7.4.3"
 httpx = "^0.25.1"
 sqlalchemy-utils = "^0.41.1"
+dependency-injector = "^4.41.0"
 
 
 [build-system]
