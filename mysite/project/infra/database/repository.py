@@ -1,4 +1,4 @@
-from apps.sql_app.entity import EntityType
+from project.domain.entity import EntityType
 
 
 class RDBRepository:

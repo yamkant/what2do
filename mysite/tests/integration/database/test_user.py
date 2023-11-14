@@ -1,4 +1,4 @@
-from apps.users.entity import User
+from apps.account.domain.entity.user import User
 
 
 def test_새로운_유저를_등록합니다(test_session):

@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import database_exists, create_database
 
-from apps.sql_app.orm import metadata
+from project.infra.database.orm import metadata
 
 
 @pytest.fixture(scope="session")

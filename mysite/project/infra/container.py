@@ -1,14 +1,12 @@
 from dependency_injector import containers, providers
-
-from apps.users.container import UserContainer
+from apps.account.infra.container import AccountContainer
 
 
 class AppContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
         modules=[
-            "apps.users.api",
-            # "reception.presentation.rest.api"
+            "apps.account.presentation.api",
         ]
     )
 
-    user = providers.Container(UserContainer)
+    account = providers.Container(AccountContainer)
