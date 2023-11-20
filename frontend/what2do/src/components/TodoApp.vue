@@ -2,7 +2,7 @@
   <div>
     <AddTodo @todoAdded="handleTodoAdded" />
     <h2>Todo List</h2>
-    <TodoList :todos="todos" />
+    <TodoList :todos="todos" @remove="removeTodo" />
   </div>
 </template>
   
@@ -41,6 +41,9 @@ export default {
     },
     handleTodoAdded(newTodo) {
       this.todos.push(newTodo);
+    },
+    removeTodo(todo) {
+      this.todos = this.todos.filter(t => t.id !== todo.id);
     }
   }
 };

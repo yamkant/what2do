@@ -1,6 +1,7 @@
 <template>
-  <li>
-    {{ todo.content }}
+  <li class="flex justify-between">
+    <span>{{ todo.content }}</span>
+    <button @click="removeTodo">제거</button>
   </li>
 </template>
   
@@ -9,6 +10,11 @@ export default {
   props: {
     todo: Object,
   },
+  methods: {
+    removeTodo() {
+      this.$emit('remove', this.todo);
+    }
+  }
 };
 </script>
   
