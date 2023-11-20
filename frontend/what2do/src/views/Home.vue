@@ -1,21 +1,15 @@
 <template>
-  <div>
-    <TodoList :todos="todos" />
-  </div>
+  <TodoApp />
 </template>
   
 <script>
-import TodoList from "@/components/TodoList.vue";
+import TodoApp from '../components/TodoApp.vue';
+
 
 export default {
   components: {
-    TodoList,
-  },
-  data() {
-    return {
-      todos: [],
-    };
-  },
+    TodoApp,
+}
 };
 </script>
   
