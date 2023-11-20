@@ -51,9 +51,16 @@ export default {
     handleTodoAdded(newTodo) {
       this.todos.push(newTodo);
     },
-    removeTodo(todo) {
+    async removeTodo(todo) {
       this.todos = this.todos.filter(t => t.id !== todo.id);
-      this.setTodoList()
+      try {
+        const response = await axios.delete(
+          `http://localhost:8000/todos/${todo.id}`,
+        );
+        this.setTodoList();
+      } catch (err) {
+        console.error("Error fetching todos:", err);
+      }
     },
     async toggleTodo(todo) {
       try {
