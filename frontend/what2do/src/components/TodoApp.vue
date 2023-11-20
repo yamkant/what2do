@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <h1>Todo List</h1>
+  <div class="space-y-2">
     <AddTodo @todoAdded="handleTodoAdded" />
-    <h2>Todo List</h2>
     <TodoList :todos="todos" @remove="removeTodo" />
   </div>
 </template>

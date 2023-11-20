@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul>
+    <ul class="space-y-1">
       <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" @remove="removeTodo" />
     </ul>
   </div>
