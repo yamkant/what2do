@@ -5,6 +5,9 @@ from pydantic import BaseModel
 class CreateTodoRequest(BaseModel):
     content: str
 
+class UpdateTodoRequest(BaseModel):
+    completed: str
+
 class TodoSchema(BaseModel):
     id: int
     content: str

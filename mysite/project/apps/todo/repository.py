@@ -20,3 +20,13 @@ def create_todo(
     db.commit()
     db.refresh(new_todo)
     return new_todo
+
+def update_todo(
+    db: Session,
+    todo_id: int,
+    todo_data: schema.TodoSchema
+):
+    todo = db.query(orm.Todo).filter(orm.Todo.id == todo_id).first()
+    todo.completed = todo_data.completed
+    db.commit()
+    return todo

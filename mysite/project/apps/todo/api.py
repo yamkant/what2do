@@ -21,3 +21,12 @@ async def post_todos(
 ):
     new_todo = repository.create_todo(db, todo)
     return new_todo
+
+@router.patch("/{todo_id}", response_model=schema.TodoSchema)
+async def patch_todos(
+    todo_id: int,
+    todo_data: schema.UpdateTodoRequest = Body(),
+    db: Session = Depends(connection.get_db),
+):
+    new_todo = repository.update_todo(db, todo_id, todo_data)
+    return new_todo
