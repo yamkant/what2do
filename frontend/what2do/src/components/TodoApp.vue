@@ -2,7 +2,10 @@
   <h1>Todo List</h1>
   <div class="space-y-2">
     <AddTodo @todoAdded="handleTodoAdded" />
-    <TodoList :todos="todos" @remove="removeTodo" @toggle="toggleTodo"/>
+    <h1>Uncompleted</h1>
+    <TodoList :todos="completed_todos" @remove="removeTodo" @toggle="toggleTodo"/>
+    <h1>Completed</h1>
+    <TodoList :todos="uncompleted_todos" @remove="removeTodo" @toggle="toggleTodo"/>
   </div>
 </template>
   
@@ -18,22 +21,29 @@ export default {
     AddTodo,
     TodoList
 },
-  props: {
-    todos: Array,
-  },
   data() {
     return {
-      todos: []
+      todos: [],
+      completed_todos: [],
+      uncompleted_todos: [],
     }
   },
   mounted() {
     this.fetchTodos();
   },
   methods: {
+    getTodosByCompleted (todos, status) {
+      return todos.filter(t => t.completed !== status);
+    },
+    setTodoList() {
+        this.completed_todos = this.getTodosByCompleted(this.todos, "Y");
+        this.uncompleted_todos = this.getTodosByCompleted(this.todos, "N");
+    },
     async fetchTodos() {
       try {
         const response = await axios.get("http://localhost:8000/todos/");
         this.todos = response.data;
+        this.setTodoList();
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
@@ -43,13 +53,15 @@ export default {
     },
     removeTodo(todo) {
       this.todos = this.todos.filter(t => t.id !== todo.id);
+      this.setTodoList()
     },
     toggleTodo(todo) {
-      console.log(todo)
       if (todo.completed === 'Y') {
         todo.completed = 'N';
+        this.setTodoList();
       } else if (todo.completed === 'N') {
         todo.completed = 'Y';
+        this.setTodoList();
       }
     }
   }
