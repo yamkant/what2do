@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Body, HTTPException
 from sqlalchemy.orm import Session
 from database import orm, connection
 from todo import schema, repository
+from user.api import get_current_user
 
 router = APIRouter(prefix="/todos")
 
@@ -10,6 +11,7 @@ router = APIRouter(prefix="/todos")
 def get_todos(
     skip: int = 0,
     limit: int = 10,
+    current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
     _todo_list = repository.get_todo_list(db, skip, limit)
