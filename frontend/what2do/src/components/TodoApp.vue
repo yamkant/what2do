@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchTodos();
+    this.getTodos();
   },
   methods: {
     getTodosByCompleted (todos, status) {
@@ -39,7 +39,7 @@ export default {
         this.completed_todos = this.getTodosByCompleted(this.todos, "Y");
         this.uncompleted_todos = this.getTodosByCompleted(this.todos, "N");
     },
-    async fetchTodos() {
+    async getTodos() {
       try {
         const response = await axios.get("http://localhost:8000/todos/");
         this.todos = response.data;
@@ -55,13 +55,23 @@ export default {
       this.todos = this.todos.filter(t => t.id !== todo.id);
       this.setTodoList()
     },
-    toggleTodo(todo) {
-      if (todo.completed === 'Y') {
-        todo.completed = 'N';
-        this.setTodoList();
-      } else if (todo.completed === 'N') {
-        todo.completed = 'Y';
-        this.setTodoList();
+    async toggleTodo(todo) {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8000/todos/${todo.id}`,
+          {
+            completed: todo.completed
+          }
+        );
+        if (todo.completed === 'Y') {
+          todo.completed = 'N';
+          this.setTodoList();
+        } else if (todo.completed === 'N') {
+          todo.completed = 'Y';
+          this.setTodoList();
+        }
+      } catch (err) {
+        console.error("Error fetching todos:", err);
       }
     }
   }
