@@ -17,7 +17,7 @@
 </template>
   
 <script>
-import axios from "axios";
+import axiosInstance from "../libs"
 
 export default {
   data() {
@@ -28,8 +28,8 @@ export default {
   methods: {
     async addTodo() {
       try {
-        const response = await axios.post(
-          "http://localhost:8000/todos/",
+        const response = await axiosInstance.post(
+          "/todos",
           {
             content: this.content,
           }
@@ -39,7 +39,7 @@ export default {
         this.$emit("todoAdded", response.data);
 
         // 입력 필드 초기화
-        this.newTodo = { content: "" };
+        this.content = "";
       } catch (error) {
         console.error("Error adding todo:", error);
       }

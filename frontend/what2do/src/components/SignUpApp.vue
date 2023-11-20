@@ -68,7 +68,7 @@ export default {
           }
         );
       } catch (err) {
-        console.error("Error fetching todos:", err);
+        console.error("Error signup process:", err);
       }
     },
   },

@@ -21,7 +21,7 @@
 </template>
   
 <script>
-import axios from 'axios';
+import axiosInstance from "../libs"
 import TodoItem from "@/components/TodoItem.vue";
 import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
@@ -53,7 +53,7 @@ export default {
     },
     async getTodos() {
       try {
-        const response = await axios.get("http://localhost:8000/todos/");
+        const response = await axiosInstance.get("/todos");
         this.todos = response.data;
         this.setTodoList();
       } catch (err) {
@@ -66,8 +66,8 @@ export default {
     },
     async removeTodo(todo) {
       try {
-        const response = await axios.delete(
-          `http://localhost:8000/todos/${todo.id}`,
+        const response = await axiosInstance.delete(
+          `/todos/${todo.id}`,
         );
         this.todos = this.todos.filter(t => t.id !== todo.id);
         this.setTodoList();
@@ -82,8 +82,8 @@ export default {
         } else if (todo.completed === 'N') {
           todo.completed = 'Y';
         }
-        const response = await axios.patch(
-          `http://localhost:8000/todos/${todo.id}`,
+        const response = await axiosInstance.patch(
+          `/todos/${todo.id}`,
           {
             completed: todo.completed
           }
