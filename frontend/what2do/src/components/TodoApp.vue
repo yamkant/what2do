@@ -2,7 +2,7 @@
   <h1>Todo List</h1>
   <div class="space-y-2">
     <AddTodo @todoAdded="handleTodoAdded" />
-    <TodoList :todos="todos" @remove="removeTodo" />
+    <TodoList :todos="todos" @remove="removeTodo" @toggle="toggleTodo"/>
   </div>
 </template>
   
@@ -33,7 +33,6 @@ export default {
     async fetchTodos() {
       try {
         const response = await axios.get("http://localhost:8000/todos/");
-        console.log(response.data)
         this.todos = response.data;
       } catch (err) {
         console.error("Error fetching todos:", err);
@@ -44,6 +43,14 @@ export default {
     },
     removeTodo(todo) {
       this.todos = this.todos.filter(t => t.id !== todo.id);
+    },
+    toggleTodo(todo) {
+      console.log(todo)
+      if (todo.completed === 'Y') {
+        todo.completed = 'N';
+      } else if (todo.completed === 'N') {
+        todo.completed = 'Y';
+      }
     }
   }
 };

@@ -1,7 +1,13 @@
 <template>
   <div>
     <ul class="space-y-1">
-      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" @remove="removeTodo" />
+      <TodoItem
+        v-for="todo in todos"
+        :key="todo.id"
+        :todo="todo"
+        @remove="removeTodo"
+        @toggle="toggleTodo"
+      />
     </ul>
   </div>
 </template>
@@ -19,6 +25,9 @@ export default {
   methods: {
     removeTodo(todo) {
       this.$emit('remove', todo);
+    }, 
+    toggleTodo(todo) {
+      this.$emit('toggle', todo);
     }
   }
 };

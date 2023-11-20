@@ -1,6 +1,32 @@
 <template>
   <li class="flex justify-between px-2">
-    <span>{{ todo.content }}</span>
+    <div class="flex">
+      <svg
+        v-if="todo.completed === 'N'" class="w-6 h-6 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0 cursor-pointer"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"
+        @click="toggleTodo"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z">
+        </path>
+      </svg>
+      <svg
+        v-else-if="todo.completed === 'Y'" class="w-6 h-6 mr-2 text-green-500 dark:text-green-400 flex-shrink-0 cursor-pointer"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"
+        @click="toggleTodo"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z">
+        </path>
+      </svg>
+      <button>
+        <label for="checkbox-e4ec4dd7-d4f8-45ae-9ec7-57339b937677">
+        </label>
+      </button>
+      <span>{{ todo.content }}</span>
+    </div>
     <button @click="removeTodo">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
         <path
@@ -19,6 +45,9 @@ export default {
   methods: {
     removeTodo() {
       this.$emit('remove', this.todo);
+    },
+    toggleTodo() {
+      this.$emit('toggle', this.todo);
     }
   }
 };
