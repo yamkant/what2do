@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import TodoItem from "@/components/TodoItem.vue";
 
 export default {
@@ -17,6 +18,24 @@ export default {
   props: {
     todos: Array,
   },
+  data() {
+    return {
+      todos: []
+    }
+  },
+  mounted() {
+    this.fetchTodos();
+  },
+  methods: {
+    async fetchTodos() {
+      try {
+        const response = await axios.get("http://localhost:8000/todos/");
+        this.todos = response.data;
+      } catch (err) {
+        console.error("Error fetching todos:", err);
+      }
+    }
+  }
 };
 </script>
 

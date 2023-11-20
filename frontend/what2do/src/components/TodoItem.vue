@@ -1,6 +1,6 @@
 <template>
   <li>
-    {{ todo.title }} - {{ todo.description }}
+    {{ todo.content }}
   </li>
 </template>
   

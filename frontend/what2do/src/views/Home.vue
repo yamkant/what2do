@@ -13,11 +13,7 @@ export default {
   },
   data() {
     return {
-      todos: [
-        { id: 1, title: "Task 1", description: "Description 1" },
-        { id: 2, title: "Task 2", description: "Description 2" },
-        // 기본 데이터
-      ],
+      todos: [],
     };
   },
 };
