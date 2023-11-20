@@ -14,16 +14,17 @@ def get_todos(
     current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
-    _todo_list = repository.get_todo_list(db, skip, limit)
+    _todo_list = repository.get_todo_list(db, skip, limit, current_user)
     return _todo_list
 
 
 @router.post("/", response_model=schema.TodoSchema)
 async def post_todos(
     todo: schema.CreateTodoRequest = Body(),
+    current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
-    new_todo = repository.create_todo(db, todo)
+    new_todo = repository.create_todo(db, todo, current_user)
     return new_todo
 
 
@@ -31,16 +32,18 @@ async def post_todos(
 async def patch_todos(
     todo_id: int,
     todo_data: schema.UpdateTodoRequest = Body(),
+    current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
-    new_todo = repository.update_todo(db, todo_id, todo_data)
+    new_todo = repository.update_todo(db, todo_id, todo_data, current_user)
     return new_todo
 
 
 @router.delete("/{todo_id}", response_model=schema.TodoSchema)
 async def delete_todos(
     todo_id: int,
+    current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
-    new_todo = repository.remove_todo(db, todo_id)
+    new_todo = repository.remove_todo(db, todo_id, current_user)
     return new_todo
