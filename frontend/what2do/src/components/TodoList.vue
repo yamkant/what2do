@@ -6,7 +6,7 @@
         :key="todo.id"
         :todo="todo"
         @remove="removeTodo"
-        @toggle="toggleTodo"
+        @toggle="checkTodo"
       />
     </ul>
   </div>
@@ -26,7 +26,7 @@ export default {
     removeTodo(todo) {
       this.$emit('remove', todo);
     }, 
-    toggleTodo(todo) {
+    checkTodo(todo) {
       this.$emit('toggle', todo);
     }
   }
