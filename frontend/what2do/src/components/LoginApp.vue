@@ -56,6 +56,9 @@ export default {
             password: this.password,
           }
         );
+
+        this.$store.commit("setToken", response.data.access_token)
+        this.$router.push('/');
       } catch (err) {
         console.error("Error login process:", err);
       }
