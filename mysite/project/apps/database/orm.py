@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, MetaData, Table
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, MetaData, Table, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -20,6 +20,7 @@ class Todo(Base):
     id = Column(Integer, primary_key=True, index=True)
     content = Column(String)
     completed = Column(String)
+    deleted_at = Column(DateTime(timezone=True), default=None, nullable=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="todos")

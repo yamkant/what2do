@@ -5,6 +5,7 @@ from todo import schema, repository
 
 router = APIRouter(prefix="/todos")
 
+
 @router.get("/", response_model=list[schema.TodoSchema])
 def get_todos(
     skip: int = 0,
@@ -14,6 +15,7 @@ def get_todos(
     _todo_list = repository.get_todo_list(db, skip, limit)
     return _todo_list
 
+
 @router.post("/", response_model=schema.TodoSchema)
 async def post_todos(
     todo: schema.CreateTodoRequest = Body(),
@@ -22,6 +24,7 @@ async def post_todos(
     new_todo = repository.create_todo(db, todo)
     return new_todo
 
+
 @router.patch("/{todo_id}", response_model=schema.TodoSchema)
 async def patch_todos(
     todo_id: int,
@@ -29,4 +32,13 @@ async def patch_todos(
     db: Session = Depends(connection.get_db),
 ):
     new_todo = repository.update_todo(db, todo_id, todo_data)
+    return new_todo
+
+
+@router.delete("/{todo_id}", response_model=schema.TodoSchema)
+async def delete_todos(
+    todo_id: int,
+    db: Session = Depends(connection.get_db),
+):
+    new_todo = repository.remove_todo(db, todo_id)
     return new_todo
