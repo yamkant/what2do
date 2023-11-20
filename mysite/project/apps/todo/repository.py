@@ -15,7 +15,7 @@ def create_todo(
     db: Session,
     todo: schema.TodoSchema
 ):
-    new_todo = orm.Todo(content=todo.content, is_completed="N")
+    new_todo = orm.Todo(content=todo.content, completed="N")
     db.add(new_todo)
     db.commit()
     db.refresh(new_todo)

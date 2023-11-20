@@ -8,7 +8,7 @@ class CreateTodoRequest(BaseModel):
 class TodoSchema(BaseModel):
     id: int
     content: str
-    is_completed: str
+    completed: str
 
     class Config:
         orm_mode = True

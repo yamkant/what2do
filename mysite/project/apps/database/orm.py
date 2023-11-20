@@ -19,7 +19,7 @@ class Todo(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     content = Column(String)
-    is_completed = Column(String)
+    completed = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="todos")
