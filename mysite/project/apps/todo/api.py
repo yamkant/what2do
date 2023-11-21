@@ -47,6 +47,7 @@ async def patch_todos(
 ):
     try:
         new_todo = repository.update_todo(db, todo_id, update_todo_request, current_user)
+    # TODO: start time보다 end time이 더 빠르면 예외 처리
     except TodoContentException as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

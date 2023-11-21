@@ -23,7 +23,11 @@ class Todo(Base):
     content = Column(String)
     completed = Column(String)
     deleted_at = Column(DateTime(timezone=True), default=None, nullable=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+
+    started_at = Column(DateTime(timezone=True), default=None, nullable=True)
+    ended_at = Column(DateTime(timezone=True), default=None, nullable=True)
+
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="todos")
 

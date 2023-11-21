@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from datetime import datetime, time
 
 from apps.database import orm
 from apps.user import schema as user_schema
@@ -12,7 +13,7 @@ def get_todo_list(
     user: user_schema.User = None,
 ):
     _todo_list = db.query(orm.Todo).filter(
-        orm.Todo.deleted_at == None, orm.Todo.owner_id==user.id
+        orm.Todo.deleted_at == None, orm.Todo.user_id==user.id
     ).offset(skip).limit(limit)
     return _todo_list
 
@@ -22,7 +23,7 @@ def get_todo(
     user_id: int,
 ):
     todo = db.query(orm.Todo).filter(
-        orm.Todo.id == todo_id, orm.Todo.deleted_at == None, orm.Todo.owner_id==user_id
+        orm.Todo.id == todo_id, orm.Todo.deleted_at == None, orm.Todo.user_id==user_id
     ).first()
     return todo
 
@@ -31,7 +32,7 @@ def create_todo(
     todo: user_schema.TodoSchema,
     user: user_schema.User = None,
 ):
-    new_todo = orm.Todo(content=todo.content, completed="N", owner_id=user.id)
+    new_todo = orm.Todo(content=todo.content, completed="N", user_id=user.id)
     db.add(new_todo)
     db.commit()
     db.refresh(new_todo)
@@ -48,6 +49,8 @@ def update_todo(
 
     update_data = request.dict(exclude_unset=True)
     for key, value in update_data.items():
+        if isinstance(value, time):
+            value = datetime.combine(datetime.today().date(), value)
         setattr(todo, key, value)
     
     db.commit()
