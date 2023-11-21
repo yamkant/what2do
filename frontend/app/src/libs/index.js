@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from '@/stores';
+import VueCookies from "vue-cookies";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    const token = store.state.token;
+    const token = VueCookies.get('auth_token');
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

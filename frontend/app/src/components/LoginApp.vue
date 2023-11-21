@@ -58,7 +58,7 @@ export default {
           }
         );
 
-        this.$store.commit("setToken", response.data.access_token)
+        this.$cookies.set('auth_token', response.data.access_token)
         this.$router.push('/');
       } catch (err) {
         console.error("Error login process:", err);
