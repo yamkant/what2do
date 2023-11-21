@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from pytz import timezone
 
-from user.api import router as user_router
-from todo.api import router as todo_router
+from apps.user.api import router as user_router
+from apps.todo.api import router as todo_router
 
-from database.connection import engine, get_db
-from database.orm import Base
+from apps.database.connection import engine, get_db
+from apps.database.orm import Base
 
 Base.metadata.create_all(bind=engine)
 
@@ -28,7 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 app.include_router(user_router)
 app.include_router(todo_router)

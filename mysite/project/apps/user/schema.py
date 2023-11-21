@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from todo.schema import TodoSchema
+
+from apps.todo.schema import TodoSchema
 
 class UserBase(BaseModel):
     email: str

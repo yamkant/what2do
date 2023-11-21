@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  backend:
+    container_name: backend
+    build: ./mysite
+    ports:
+      - '8000:8000'

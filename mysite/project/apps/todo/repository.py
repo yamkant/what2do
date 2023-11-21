@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from database import orm
-from user import schema
-from shared_kernel.utils import now
+
+from apps.database import orm
+from apps.user import schema
+from apps.shared_kernel.utils import now
 
 def get_todo_list(
     db: Session,
