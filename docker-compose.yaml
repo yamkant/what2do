@@ -1,6 +1,17 @@
 version: "3"
 
 services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    environment:
+    - VITE_API_URL=http://localhost:8000
+    ports:
+      - '80:8080'
+    depends_on:
+      - backend
+    
+
   backend:
     container_name: backend
     build: ./mysite

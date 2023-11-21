@@ -60,8 +60,9 @@ export default {
   methods: {
     async signUp() {
       try {
+        const api_url = import.meta.env.VITE_API_URL;
         const response = await axios.post(
-          `http://localhost:8000/users`,
+          `${api_url}/users`,
           {
             email: this.email,
             password: this.password,

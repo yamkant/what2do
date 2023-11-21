@@ -49,8 +49,9 @@ export default {
   methods: {
     async login() {
       try {
+        const api_url = import.meta.env.VITE_API_URL;
         const response = await axios.post(
-          `http://127.0.0.1:8000/users/login`,
+          `${api_url}/users/login`,
           {
             email: this.email,
             password: this.password,
