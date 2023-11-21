@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Depends, Body, HTTPException
 from sqlalchemy.orm import Session
+from starlette import status
 
 from apps.database import orm, connection
 from apps.todo import schema, repository
 from apps.user.api import get_current_user
+
+from apps.todo.exception import TodoContentException
 
 router = APIRouter(prefix="/todos")
 
@@ -25,7 +28,13 @@ async def post_todos(
     current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
-    new_todo = repository.create_todo(db, todo, current_user)
+    try:
+        new_todo = repository.create_todo(db, todo, current_user)
+    except TodoContentException as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message
+        )
     return new_todo
 
 
@@ -36,7 +45,13 @@ async def patch_todos(
     current_user: str = Depends(get_current_user),
     db: Session = Depends(connection.get_db),
 ):
-    new_todo = repository.update_todo(db, todo_id, update_todo_request, current_user)
+    try:
+        new_todo = repository.update_todo(db, todo_id, update_todo_request, current_user)
+    except TodoContentException as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message
+        )
     return new_todo
 
 

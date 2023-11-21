@@ -2,6 +2,8 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, MetaData, T
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.ext.declarative import declarative_base
 
+from apps.todo.exception import TodoContentException
+
 Base = declarative_base()
 
 class User(Base):
@@ -24,3 +26,9 @@ class Todo(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="todos")
+
+    @validates("content")
+    def validate_content(self, key, content) -> str:
+        if not content:
+            raise TodoContentException()
+        return content
