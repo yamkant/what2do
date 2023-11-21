@@ -7,6 +7,7 @@
         :todo="todo"
         @remove="removeTodo"
         @toggle="checkTodo"
+        @inputChange="changeTodo"
       />
     </ul>
   </div>
@@ -28,6 +29,9 @@ export default {
     }, 
     checkTodo(todo) {
       this.$emit('toggle', todo);
+    },
+    changeTodo(todo) {
+      this.$emit('changeTodo', todo);
     }
   }
 };

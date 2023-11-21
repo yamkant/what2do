@@ -3,7 +3,12 @@
   <div class="space-y-2">
     <AddTodo @todoAdded="handleTodoAdded" />
     <h1>Uncompleted</h1>
-    <TodoList :todos="completed_todos" @remove="removeTodo" @toggle="checkTodo"/>
+    <TodoList
+      :todos="completed_todos"
+      @remove="removeTodo"
+      @toggle="checkTodo"
+      @changeTodo="changeTodo"
+    />
     <div class="flex justify-between">
       <h1>Completed</h1>
       <label class="relative inline-flex items-center cursor-pointer">
@@ -16,7 +21,12 @@
           ></div>
       </label>
     </div>
-    <TodoList v-if="toggle_flag" :todos="uncompleted_todos" @remove="removeTodo" @toggle="checkTodo"/>
+    <TodoList
+      v-if="toggle_flag"
+      :todos="uncompleted_todos"
+      @remove="removeTodo"
+      @toggle="checkTodo"
+    />
   </div>
 </template>
   
@@ -83,10 +93,17 @@ export default {
           todo.completed = 'Y';
         }
         const response = await axiosInstance.patch(
-          `/todos/${todo.id}`,
-          {
-            completed: todo.completed
-          }
+          `/todos/${todo.id}`, todo
+        );
+        this.setTodoList();
+      } catch (err) {
+        console.error("Error fetching todos:", err);
+      }
+    },
+    async changeTodo(todo) {
+      try {
+        const response = await axiosInstance.patch(
+          `/todos/${todo.id}`, todo
         );
         this.setTodoList();
       } catch (err) {

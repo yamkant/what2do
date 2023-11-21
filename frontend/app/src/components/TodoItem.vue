@@ -25,7 +25,10 @@
         <label for="checkbox-e4ec4dd7-d4f8-45ae-9ec7-57339b937677">
         </label>
       </button>
-      <span>{{ todo.content }}</span>
+      <input
+        @change="changeTodoContent"
+        v-model="inputValue"
+      />
     </div>
     <button @click="removeTodo">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -39,6 +42,14 @@
   
 <script>
 export default {
+  mounted() {
+    this.inputValue = this.todo.content
+  },
+  data() {
+    return {
+      'inputValue': "",
+    }
+  },
   props: {
     todo: Object,
   },
@@ -48,6 +59,9 @@ export default {
     },
     checkTodo() {
       this.$emit('toggle', this.todo);
+    },
+    changeTodoContent() {
+      this.$emit('inputChange', { ...this.todo, content: this.inputValue })
     }
   }
 };
