@@ -35,6 +35,9 @@ import axiosInstance from "../libs"
 import TodoItem from "@/components/TodoItem.vue";
 import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
+import {
+  cvtTodoToRequestData,
+} from "../libs/todo.js"
 
 export default {
   components: {
@@ -93,7 +96,7 @@ export default {
           todo.completed = 'Y';
         }
         const response = await axiosInstance.patch(
-          `/todos/${todo.id}`, todo
+          `/todos/${todo.id}`, cvtTodoToRequestData(todo)
         );
         this.setTodoList();
       } catch (err) {
@@ -103,7 +106,7 @@ export default {
     async changeTodo(todo) {
       try {
         const response = await axiosInstance.patch(
-          `/todos/${todo.id}`, todo
+          `/todos/${todo.id}`, cvtTodoToRequestData(todo)
         );
         this.setTodoList();
       } catch (err) {

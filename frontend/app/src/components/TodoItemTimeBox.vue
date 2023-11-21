@@ -3,29 +3,28 @@
     <label for="startTime" @click="setStartTimeNow" class="cursor-pointer">
       <font-awesome-icon icon="fa-solid fa-circle-play" />
     </label>
-    <input type="time" id="startTime" v-model="startTime" @change="activateEndTime" />
+    <input type="time" v-model="startTime" @change="activateEndTime" />
 
     <label for="endTime" @click="setEndTimeNow" class="cursor-pointer">
       <font-awesome-icon icon="fa-solid fa-circle-stop" />
     </label>
-    <input type="time" id="endTime" v-model="endTime" :disabled="!isEndTimeEnabled" @input="validateEndTime" />
+    <input type="time" v-model="endTime" :disabled="!isEndTimeEnabled" @input="validateEndTime" />
   </div>
 </template>
   
 <script>
-function getTimeNow() {
-  const now = new Date();
-  function padZero(value) {
-    return value < 10 ? `0${value}` : value;
-  }
-  const formattedDateTime = `${now.getFullYear()}-${padZero(now.getMonth() + 1)}-${padZero(now.getDate())} ${padZero(now.getHours())}:${padZero(now.getMinutes())}`;
-  return formattedDateTime.substring(formattedDateTime.length - 5)
-}
+import axiosInstance from "../libs"
+import {
+  getTimeNow,
+  cvtIsoStringToTime,
+  cvtTodoToRequestData,
+} from "../libs/todo.js"
 
 export default {
   mounted() {
-    this.startTime = this.todo.startTime
-    this.endTime = this.todo.endTime
+    this.startTime = cvtIsoStringToTime(this.todo.started_at)
+    this.endTime = cvtIsoStringToTime(this.todo.ended_at)
+    this.activateEndTime()
   },
   data() {
     return {
@@ -43,25 +42,47 @@ export default {
         this.isEndTimeEnabled = true;
       }
     },
-    setStartTimeNow() {
+    async setStartTimeNow() {
       this.startTime = getTimeNow();
       this.activateEndTime();
+
+      const reqData = cvtTodoToRequestData({ ...this.todo, started_at:this.startTime})
+      try {
+        const response = await axiosInstance.patch(
+          `/todos/${this.todo.id}`, reqData
+        );
+        this.endTime = ""
+      }catch (err) {
+        console.error("Error fetching todos:", err);
+      }
     },
-    setEndTimeNow() {
+    async setEndTimeNow() {
       if (!this.isEndTimeEnabled) {
         alert("시작시간을 먼저 설정해주세요.")
         return ;
       }
       this.endTime = getTimeNow();
-      this.validateEndTime();
+      if (!this.isValidateEndTime()) {
+        return ;
+      }
+
+      const reqData = cvtTodoToRequestData({ ...this.todo, ended_at:this.endTime})
+      try {
+        const response = await axiosInstance.patch(
+          `/todos/${this.todo.id}`, reqData
+        );
+      }catch (err) {
+        console.error("Error fetching todos:", err);
+      }
     },
-    validateEndTime() {
+    isValidateEndTime() {
       if (this.endTime < this.startTime) {
         alert('시작 시간보다 이후의 시간으로 등록해야합니다.')
         this.endTime = '';
-        return
+        return false
       }
-    }
+      return true
+    },
   }
 };
 </script>
