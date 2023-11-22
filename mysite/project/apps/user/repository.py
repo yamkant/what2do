@@ -15,14 +15,12 @@ class UserRDBRepository(RDBRepository):
         ).first()
         return todo
 
+    @staticmethod
     def get_user_by_email(session: Session, email: str):
         user = session.query(orm.User).filter(
             orm.User.email == email
         ).first()
         return user
-
-def get_user(db: Session, user_id: int):
-    return db.query(orm.User).filter(orm.User.id == user_id).first()
 
 
 def get_user_by_email(db: Session, email: str):

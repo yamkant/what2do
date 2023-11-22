@@ -1,13 +1,12 @@
-from datetime import datetime, time
 from typing import Callable, ContextManager, List, Optional
+from passlib.context import CryptContext
 
-from sqlalchemy.orm import Query, Session
+from sqlalchemy.orm import Session
 
 from apps.user.repository import UserRDBRepository
 from apps.user.query import UserQueryUseCase
 from apps.database import orm
 from apps.user import schema as user_schema
-from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -26,7 +25,7 @@ class UserCommandUseCase:
     def create_user(
         self,
         request: user_schema.CreateUserRequest
-    ) -> Optional[user_schema.User]:
+    ) -> Optional[user_schema.UserSchema]:
         # TODO: 적달한 Exception으로 처리
         new_user = self.user_query.get_user(email=request.email)
         if new_user:

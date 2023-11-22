@@ -3,7 +3,6 @@ from typing import Callable, ContextManager, List
 
 from apps.todo.repository import TodoRDBRepository
 from apps.database import orm
-from apps.todo import schema as todo_schema
 from apps.user import schema as user_schema
 
 
@@ -26,7 +25,7 @@ class TodoQueryUseCase:
 
     def get_todo_list(
         self,
-        user: user_schema.User = None,
+        user: user_schema.UserSchema = None,
     ) -> list[orm.Todo]:
         with self.db_session() as session:
             _todo_list = session.query(orm.Todo).filter(

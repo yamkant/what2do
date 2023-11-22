@@ -27,7 +27,7 @@ class TodoCommandUseCase:
     def create_todo(
         self,
         request: todo_schema.TodoSchema,
-        user: user_schema.User,
+        user: user_schema.UserSchema,
     ):
         new_todo = orm.Todo(content=request.content, completed="N", user_id=user.id)
         with self.db_session() as session:
@@ -40,7 +40,7 @@ class TodoCommandUseCase:
         self,
         todo_id: int,
         request: todo_schema.UpdateTodoRequest,
-        user: user_schema.User,
+        user: user_schema.UserSchema,
     ):
         todo = self.todo_query.get_todo(todo_id=todo_id)
         # TODO: 해당 유저가 todo_id의 todo를 가지는지 판단
@@ -58,7 +58,7 @@ class TodoCommandUseCase:
     def remove_todo(
         self,
         todo_id: int,
-        user: user_schema.User = None,
+        user: user_schema.UserSchema = None,
     ) -> None:
         todo = self.todo_query.get_todo(todo_id=todo_id)
         # TODO: 해당 유저가 todo_id의 todo를 가지는지 판단
