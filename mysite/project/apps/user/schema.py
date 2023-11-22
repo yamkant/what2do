@@ -5,7 +5,7 @@ from apps.todo.schema import TodoSchema
 class UserBase(BaseModel):
     email: str
 
-class UserCreate(UserBase):
+class CreateUserRequest(UserBase):
     password: str
 
 class LoginUser(UserBase):

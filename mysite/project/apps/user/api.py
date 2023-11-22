@@ -2,12 +2,15 @@ from datetime import timedelta, datetime
 
 from fastapi import APIRouter, Depends, Body, HTTPException
 from fastapi.security import OAuth2PasswordBearer
+from dependency_injector.wiring import Provide, inject
 from sqlalchemy.orm import Session
 from starlette import status
 from jose import JWTError, jwt
 
 from apps.user import repository, schema
 from apps.database import orm, connection
+from apps.user.command import UserCommandUseCase
+from apps.shared_kernel.container import AppContainer
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 SECRET_KEY = "4ab2fce7a6bd79e1c014396315ed322dd6edb1c5d975c6b74a2904135172c03c"
@@ -52,14 +55,14 @@ def get_users(
     "/",
     status_code=status.HTTP_204_NO_CONTENT
 )
+@inject
 def post_users(
-    user: schema.UserCreate,
-    db: Session = Depends(connection.get_db),
-):
-    db_user = repository.get_user_by_email(db, email=user.email)
-    if db_user:
+    request: schema.CreateUserRequest,
+    user_command: UserCommandUseCase = Depends(Provide[AppContainer.user.user_command]),
+) -> None:
+    new_user =  user_command.create_user(request=request)
+    if not new_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    new_user =  repository.create_users(db=db, user=user)
 
 @router.post(
     "/login",
