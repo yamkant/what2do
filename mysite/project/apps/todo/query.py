@@ -22,6 +22,7 @@ class TodoQueryUseCase:
     ) -> orm.Todo:
         with self.db_session() as session:
             _todo = self.todo_repo.get_todo_by_todo_id(session=session, todo_id=todo_id)
+            print("TODO IN QUERYUSECASE: ", _todo)
         return _todo
 
     def get_todo_list(

@@ -7,6 +7,8 @@ from apps.database import orm
 from apps.todo import schema as todo_schema
 from apps.user import schema as user_schema
 
+from datetime import datetime, time
+
 
 class TodoCommandUseCase:
     def __init__(
@@ -16,38 +18,39 @@ class TodoCommandUseCase:
         db_session: Callable[[], ContextManager[Session]]
     ):
         self.todo_repo = todo_repo
+        self.todo_query = todo_query
         self.db_session = db_session
+
 
     def create_todo(
         self,
-        todo: todo_schema.TodoSchema,
+        request: todo_schema.TodoSchema,
         user: user_schema.User,
     ):
+        new_todo = orm.Todo(content=request.content, completed="N", user_id=user.id)
         with self.db_session() as session:
-            new_todo = orm.Todo(content=todo.content, completed="N", user_id=user.id)
-            session.add(new_todo)
-            session.commit()
-            session.refresh(new_todo)
+            self.todo_repo.add(session=session, instance=new_todo)
+            self.todo_repo.commit(session=session)
         return new_todo
 
 
-    # def update_todo(
-    #     db: Session,
-    #     todo_id: int,
-    #     request: todo_schema.UpdateTodoRequest,
-    #     user: user_schema.User = None,
-    # ):
-    #     todo = get_todo(db=db, todo_id=todo_id, user_id=user.id)
-
-    #     update_data = request.dict(exclude_unset=True)
-    #     for key, value in update_data.items():
-    #         if isinstance(value, time):
-    #             value = datetime.combine(datetime.today().date(), value)
-    #         setattr(todo, key, value)
-        
-    #     db.commit()
-    #     db.refresh(todo)
-    #     return todo
+    def update_todo(
+        self,
+        todo_id: int,
+        request: todo_schema.UpdateTodoRequest,
+        user: user_schema.User,
+    ):
+        todo = self.todo_query.get_todo(todo_id=todo_id)
+        # TODO: 해당 유저가 todo_id의 todo를 가지는지 판단
+        update_data = request.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
+            if isinstance(value, time):
+                value = datetime.combine(datetime.today().date(), value)
+            setattr(todo, key, value)
+        with self.db_session() as session:
+            self.todo_repo.add(session=session, instance=todo)
+            self.todo_repo.commit(session=session)
+        return todo
 
 
     # def remove_todo(

@@ -42,22 +42,23 @@ async def post_todos(
     return new_todo
 
 
-# @router.patch("/{todo_id}", response_model=schema.TodoSchema)
-# async def patch_todos(
-#     todo_id: int,
-#     update_todo_request: schema.UpdateTodoRequest = Body(),
-#     current_user: str = Depends(get_current_user),
-#     db: Session = Depends(connection.get_db),
-# ):
-#     try:
-#         new_todo = repository.update_todo(db, todo_id, update_todo_request, current_user)
-#     # TODO: start time보다 end time이 더 빠르면 예외 처리
-#     except TodoContentException as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST,
-#             detail=e.message
-#         )
-#     return new_todo
+@router.patch("/{todo_id}", response_model=schema.TodoSchema)
+@inject
+async def patch_todos(
+    todo_id: int,
+    update_todo_request: schema.UpdateTodoRequest = Body(),
+    current_user: str = Depends(get_current_user),
+    todo_command: TodoCommandUseCase = Depends(Provide[AppContainer.todo.todo_command]),
+):
+    try:
+        updated_todo = todo_command.update_todo(todo_id=todo_id, request=update_todo_request, user=current_user)
+    # TODO: start time보다 end time이 더 빠르면 예외 처리
+    except TodoContentException as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message
+        )
+    return updated_todo
 
 
 # @router.delete("/{todo_id}", response_model=schema.TodoSchema)
