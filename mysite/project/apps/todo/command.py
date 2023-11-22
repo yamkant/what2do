@@ -1,13 +1,15 @@
-from sqlalchemy.orm import Query, Session
+from datetime import datetime, time
 from typing import Callable, ContextManager, List
+
+from sqlalchemy.orm import Query, Session
 
 from apps.todo.repository import TodoRDBRepository
 from apps.todo.query import TodoQueryUseCase
 from apps.database import orm
 from apps.todo import schema as todo_schema
 from apps.user import schema as user_schema
+from apps.shared_kernel.utils import now
 
-from datetime import datetime, time
 
 
 class TodoCommandUseCase:
@@ -53,12 +55,14 @@ class TodoCommandUseCase:
         return todo
 
 
-    # def remove_todo(
-    #     db: Session,
-    #     todo_id: int,
-    #     user: user_schema.User = None,
-    # ):
-    #     todo = get_todo(db=db, todo_id=todo_id, user_id=user.id)
-    #     todo.deleted_at = now()
-    #     db.commit()
-    #     return todo
+    def remove_todo(
+        self,
+        todo_id: int,
+        user: user_schema.User = None,
+    ) -> None:
+        todo = self.todo_query.get_todo(todo_id=todo_id)
+        # TODO: 해당 유저가 todo_id의 todo를 가지는지 판단
+        todo.deleted_at = now()
+        with self.db_session() as session:
+            self.todo_repo.add(session=session, instance=todo)
+            self.todo_repo.commit(session=session)

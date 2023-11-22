@@ -10,6 +10,5 @@ class TodoRDBRepository(RDBRepository):
         todo = session.query(orm.Todo).filter(
             orm.Todo.id == todo_id, orm.Todo.deleted_at == None
         ).first()
-        print("TODO:============", todo)
         return todo
 

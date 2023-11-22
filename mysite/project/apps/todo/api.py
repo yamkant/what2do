@@ -61,11 +61,11 @@ async def patch_todos(
     return updated_todo
 
 
-# @router.delete("/{todo_id}", response_model=schema.TodoSchema)
-# async def delete_todos(
-#     todo_id: int,
-#     current_user: str = Depends(get_current_user),
-#     db: Session = Depends(connection.get_db),
-# ):
-#     new_todo = repository.remove_todo(db, todo_id, current_user)
-#     return new_todo
+@router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+@inject
+async def delete_todos(
+    todo_id: int,
+    current_user: str = Depends(get_current_user),
+    todo_command: TodoCommandUseCase = Depends(Provide[AppContainer.todo.todo_command]),
+) -> None:
+    todo_command.remove_todo(todo_id=todo_id, user=current_user)
