@@ -12,7 +12,9 @@ def get_user(db: Session, user_id: int):
 
 
 def get_user_by_email(db: Session, email: str):
-    return db.query(orm.User).filter(orm.User.email == email).first()
+    with db as session:
+        user = session.query(orm.User).filter(orm.User.email == email).first()
+    return user
 
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
