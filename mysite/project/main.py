@@ -3,6 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 from pytz import timezone
 
 from apps.user.api import router as user_router
+from apps.user.api import get_current_user
 from apps.todo.api import router as todo_router
 
 from apps.database.connection import engine, get_db
@@ -13,6 +14,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 get_db = get_db
+get_current_user = get_current_user
 
 origins = [
     "http://localhost",

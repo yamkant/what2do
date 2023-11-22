@@ -11,9 +11,10 @@ def get_todo_list(
     skip: int = 0,
     limit: int = 10,
     user: user_schema.User = None,
-):
+) -> list[user_schema.User]:
     _todo_list = db.query(orm.Todo).filter(
-        orm.Todo.deleted_at == None, orm.Todo.user_id==user.id
+        orm.Todo.deleted_at == None,
+        orm.Todo.user_id == user.id
     ).offset(skip).limit(limit)
     return _todo_list
 

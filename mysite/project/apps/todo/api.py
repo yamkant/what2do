@@ -4,7 +4,7 @@ from starlette import status
 
 from apps.database import orm, connection
 from apps.todo import schema, repository
-from apps.user.api import get_current_user
+from main import get_current_user
 
 from apps.todo.exception import TodoContentException
 
