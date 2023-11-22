@@ -4,9 +4,6 @@ WORKDIR /project
 
 ENV PYTHONUNBUFFERED 1
 
-COPY ./README.md .
-COPY ./pyproject.toml .
-COPY ./poetry.lock .
 COPY ./project .
 
 RUN pip3 install poetry

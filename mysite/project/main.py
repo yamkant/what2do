@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from pytz import timezone
 
+from apps.shared_kernel.container import AppContainer
+
 from apps.user.api import router as user_router
 from apps.user.api import get_current_user
 from apps.todo.api import router as todo_router
@@ -12,6 +14,7 @@ from apps.database.orm import Base
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app_container = AppContainer()
 
 get_db = get_db
 get_current_user = get_current_user
@@ -24,6 +27,8 @@ origins = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
 ]
+
+app.container = app_container
 
 app.add_middleware(
     CORSMiddleware,
