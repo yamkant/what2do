@@ -6,6 +6,7 @@ from starlette import status
 from apps.database import orm, connection
 from apps.todo import schema, repository
 from apps.todo.query import TodoQueryUseCase
+from apps.todo.command import TodoCommandUseCase
 from apps.shared_kernel.container import AppContainer
 from main import get_current_user
 
@@ -24,20 +25,21 @@ def get_todos(
     return _todo_list
 
 
-# @router.post("/", response_model=schema.TodoSchema)
-# async def post_todos(
-#     todo: schema.CreateTodoRequest = Body(),
-#     current_user: str = Depends(get_current_user),
-#     db: Session = Depends(connection.get_db),
-# ):
-#     try:
-#         new_todo = repository.create_todo(db, todo, current_user)
-#     except TodoContentException as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST,
-#             detail=e.message
-#         )
-#     return new_todo
+@router.post("/", response_model=schema.TodoSchema)
+@inject
+async def post_todos(
+    current_user: str = Depends(get_current_user),
+    todo: schema.CreateTodoRequest = Body(),
+    todo_command: TodoCommandUseCase = Depends(Provide[AppContainer.todo.todo_command]),
+):
+    try:
+        new_todo = todo_command.create_todo(todo, current_user)
+    except TodoContentException as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message
+        )
+    return new_todo
 
 
 # @router.patch("/{todo_id}", response_model=schema.TodoSchema)

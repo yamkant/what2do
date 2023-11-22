@@ -2,20 +2,26 @@ from sqlalchemy.orm import Query, Session
 from typing import Callable, ContextManager, List
 
 from apps.todo.repository import TodoRDBRepository
+from apps.todo.query import TodoQueryUseCase
 from apps.database import orm
 from apps.todo import schema as todo_schema
 from apps.user import schema as user_schema
 
 
 class TodoCommandUseCase:
-    def __init__(self, todo_repo: TodoRDBRepository, db_session: Callable[[], ContextManager[Session]]):
+    def __init__(
+        self,
+        todo_repo: TodoRDBRepository,
+        todo_query: TodoQueryUseCase,
+        db_session: Callable[[], ContextManager[Session]]
+    ):
         self.todo_repo = todo_repo
         self.db_session = db_session
 
     def create_todo(
         self,
-        todo: todo_schema.Todo,
-        user: user_schema.User = None,
+        todo: todo_schema.TodoSchema,
+        user: user_schema.User,
     ):
         with self.db_session() as session:
             new_todo = orm.Todo(content=todo.content, completed="N", user_id=user.id)
