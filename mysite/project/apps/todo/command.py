@@ -47,7 +47,7 @@ class TodoCommandUseCase:
         update_data = request.model_dump(exclude_unset=True)
         for key, value in update_data.items():
             if isinstance(value, time):
-                value = datetime.combine(datetime.today().date(), value)
+                value = datetime.combine(now(), value)
             setattr(todo, key, value)
         with self.db_session() as session:
             self.todo_repo.add(session=session, instance=todo)
@@ -62,7 +62,16 @@ class TodoCommandUseCase:
     ) -> None:
         todo = self.todo_query.get_todo(todo_id=todo_id)
         # TODO: 해당 유저가 todo_id의 todo를 가지는지 판단
-        todo.deleted_at = now()
+        current_time = now()
+        todo.deleted_at = datetime(
+            year=current_time.year,
+            month=current_time.month,
+            day=current_time.day,
+            hour=current_time.hour,
+            minute=current_time.minute,
+            second=current_time.second
+        )
         with self.db_session() as session:
             self.todo_repo.add(session=session, instance=todo)
             self.todo_repo.commit(session=session)
+        return todo

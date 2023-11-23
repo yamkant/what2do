@@ -61,11 +61,12 @@ async def patch_todos(
     return updated_todo
 
 
-@router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{todo_id}", response_model=schema.TodoSchema)
 @inject
 async def delete_todos(
     todo_id: int,
     current_user: str = Depends(get_current_user),
     todo_command: TodoCommandUseCase = Depends(Provide[AppContainer.todo.todo_command]),
-) -> None:
-    todo_command.remove_todo(todo_id=todo_id, user=current_user)
+):
+    todo = todo_command.remove_todo(todo_id=todo_id, user=current_user)
+    return todo

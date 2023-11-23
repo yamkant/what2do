@@ -20,5 +20,7 @@ class TodoSchema(BaseModel):
     started_at: Optional[datetime]
     ended_at: Optional[datetime]
 
+    deleted_at: Optional[datetime]
+
     class Config:
         orm_mode = True

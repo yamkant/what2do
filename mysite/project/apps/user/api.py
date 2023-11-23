@@ -38,16 +38,17 @@ def get_current_user(
 
 @router.post(
     "/",
-    status_code=status.HTTP_204_NO_CONTENT
+    response_model=schema.UserSchema,
 )
 @inject
 def post_users(
     request: schema.CreateUserRequest,
     user_command: UserCommandUseCase = Depends(Provide[AppContainer.user.user_command]),
-) -> None:
+):
     new_user =  user_command.create_user(request=request)
     if not new_user:
         raise HTTPException(status_code=400, detail="Email already registered")
+    return new_user
 
 @router.post(
     "/login",

@@ -1,7 +1,7 @@
 from project.apps.database import orm
 import pytest
 
-@pytest.mark.skip(reason="Test is skipped for a specific reason")
+@pytest.skip
 def test_투두리스트_추가(test_session):
     # given
     new_todo = orm.Todo(content="New", completed="N")
