@@ -8,7 +8,7 @@ from apps.todo import schema, repository
 from apps.todo.query import TodoQueryUseCase
 from apps.todo.command import TodoCommandUseCase
 from apps.shared_kernel.container import AppContainer
-from main import get_current_user
+from apps.user.api import get_current_user
 
 from apps.todo.exception import TodoContentException
 
