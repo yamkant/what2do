@@ -105,8 +105,6 @@ def test_get_todo_list_삭제된_todo가_있는_경우(test_user):
 
     # when
     todo_list = todo_query.get_todo_list(test_user)
-    for todo in todo_list:
-        print(todo.deleted_at)
 
     # then
     assert len(todo_list) == TODO_COUNT
