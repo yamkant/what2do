@@ -1,8 +1,6 @@
-from fastapi import Depends
-from fastapi.testclient import TestClient
 import pytest
 from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 
 from apps.database import orm
@@ -48,4 +46,3 @@ def test_session(test_db):
     session.close()
     trans.rollback()
     connection.close()
-

@@ -25,7 +25,7 @@ class TodoQueryUseCase:
 
     def get_todo_list(
         self,
-        user: user_schema.UserSchema = None,
+        user: user_schema.UserSchema,
     ) -> list[orm.Todo]:
         with self.db_session() as session:
             _todo_list = session.query(orm.Todo).filter(
