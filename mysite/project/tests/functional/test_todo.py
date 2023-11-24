@@ -121,8 +121,6 @@ def test_로그인유저_todo_시작시간을_설정한다(get_logined_client, t
         headers=get_logined_client["headers"]
     )
 
-    print(response.json())
-
     # then
     schema = Schema(
         {
