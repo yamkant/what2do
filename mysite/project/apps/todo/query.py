@@ -25,11 +25,8 @@ class TodoQueryUseCase:
 
     def get_todo_list(
         self,
-        user: user_schema.UserSchema = None,
+        user: user_schema.UserSchema,
     ) -> list[orm.Todo]:
         with self.db_session() as session:
-            _todo_list = session.query(orm.Todo).filter(
-                orm.Todo.deleted_at == None,
-                orm.Todo.user_id == user.id
-            ).all()
+            _todo_list = self.todo_repo.get_todos_order_by_id(session=session, user_id=user.id)
         return _todo_list

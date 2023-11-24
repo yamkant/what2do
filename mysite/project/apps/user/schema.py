@@ -13,8 +13,8 @@ class LoginUser(UserBase):
 
 class UserSchema(UserBase):
     id: int
-    is_active: bool
-    todos: list[TodoSchema] = []
+    # is_active: bool
+    # todos: list[TodoSchema] = []
 
     class Config:
         orm_mode = True
