@@ -1,19 +1,15 @@
-import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
 
-url = 'https://finance.yahoo.com/topic/stock-market-news/'
-response = requests.get(url)
+from driver_helper import DriverHelper
+from news_parser import NewsParser
 
-if response.status_code == 200:
-    html_content = response.text
-    soup = BeautifulSoup(html_content, 'html.parser')
+def main():
+    # Person 클래스의 인스턴스 생성
+    driver = webdriver.Chrome()
+    url = 'https://finance.yahoo.com/topic/stock-market-news/'
+    newsParser = NewsParser(driver, url, DriverHelper(driver))
+    newsParser.run()
 
-    # 예제: 모든 기사 제목과 링크 출력
-    articles = soup.find_all('h3', class_='Mb(5px)')
-    for article in articles:
-        title = article.text.strip()
-        link = article.find('a')['href']
-        print(f'Title: {title}\nLink: {link}\n')
-
-else:
-    print(f'Failed to retrieve the page. Status code: {response.status_code}')
+if __name__ == "__main__":
+    # main 함수 호출
+    main()

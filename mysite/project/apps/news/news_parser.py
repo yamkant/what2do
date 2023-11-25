@@ -1,8 +1,6 @@
-from selenium import webdriver
 import time
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
-import json
 
 class PostComponentParser:
     def __init__(self, page_source) -> None:
@@ -40,10 +38,10 @@ class PostComponentParser:
         return ret
 
 class NewsParser:
-    def __init__(self, news_url, DriverHelper):
+    def __init__(self, driver, news_url, DriverHelper):
         self.news_url = news_url
-        self.driver = webdriver.Chrome()
-        self.helper = DriverHelper(self.helper)
+        self.driver = driver
+        self.helper = DriverHelper
 
     def run(self):
         self.driver.get(self.news_url)
