@@ -11,10 +11,12 @@ import {
     faUserSecret,
     faCirclePlay,
     faCircleStop,
+    faMoneyBillTrendUp,
+    faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faUserSecret, faCirclePlay, faCircleStop)
+library.add(faUserSecret, faCirclePlay, faCircleStop, faMoneyBillTrendUp, faArrowUpRightFromSquare)
 
 const app = createApp(App)
 app.use(VueCookies)
