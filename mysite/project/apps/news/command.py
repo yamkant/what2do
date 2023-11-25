@@ -14,7 +14,7 @@ class PostCommandUseCase:
         post_repo: PostRDBRepository,
         post_query: PostQueryUseCase,
         db_session: Callable[[], ContextManager[Session]]
-    ):
+    ) -> post_schema.PostSchema:
         self.post_repo = post_repo
         self.post_query = post_query
         self.db_session = db_session
