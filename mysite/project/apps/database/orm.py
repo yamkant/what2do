@@ -36,3 +36,12 @@ class Todo(Base):
         if not content:
             raise TodoContentException()
         return content
+
+class Post(Base):
+    __tablename__ = "posts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    author = Column(String)
+    body = Column(String)
+
+    published_at = Column(String)
