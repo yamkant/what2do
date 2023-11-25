@@ -4,9 +4,9 @@ from typing import Optional
 
 class PostComponent(BaseModel):
     title: Optional[str]
-    time: Optional[str]
-    authors: Optional[str]
-    body: list[str]
+    published_at: Optional[str]
+    author: Optional[str]
+    body: Optional[str]
 
 class PostComponentParser:
     def __init__(
@@ -43,8 +43,8 @@ class PostComponentParser:
     def get_post_compoent(self) -> PostComponent:
         ret = {
             'title': self.get_title(),
-            'time': self.get_time(),
-            'authors': self.get_authors(),
-            'body': self.get_body_list(),
+            'published_at': self.get_time(),
+            'author': self.get_authors(),
+            'body': ''.join(self.get_body_list()),
         }
         return PostComponent(**ret)
