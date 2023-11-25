@@ -4,6 +4,7 @@ from datetime import datetime, time
 
 class PostSchema(BaseModel):
     id: int
+    title: str
     published_at: str
     author: str
     body: str
