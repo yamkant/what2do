@@ -1,15 +1,16 @@
 from selenium import webdriver
+import json
 
 from driver_helper import DriverHelper
 from news_parser import NewsParser
 
 def main():
-    # Person 클래스의 인스턴스 생성
-    driver = webdriver.Chrome()
-    url = 'https://finance.yahoo.com/topic/stock-market-news/'
-    newsParser = NewsParser(driver, url, DriverHelper(driver))
-    newsParser.run()
+    driver: webdriver = webdriver.Chrome()
+    url: str = 'https://finance.yahoo.com/topic/stock-market-news/'
+    newsParser: NewsParser = NewsParser(driver, url, DriverHelper(driver))
+    ret_json = newsParser.run()
+    with open('./data/output.json', 'w', encoding='utf-8') as json_file:
+        json.dump(ret_json, json_file, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
-    # main 함수 호출
     main()
