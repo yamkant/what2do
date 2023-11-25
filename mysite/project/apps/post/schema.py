@@ -1,11 +1,16 @@
 from pydantic import BaseModel
 
-class CreatePostResponse(BaseModel):
+class UploadNewsPostResponse(BaseModel):
     id: int
     title: str
 
-    class Config:
-        orm_mode = True
+class NewsPostResponse(BaseModel):
+    id: int
+    title: str
+
+class Page(BaseModel):
+    skip: int = 0
+    limit: int = 10
 
 class PostSchema(BaseModel):
     id: int
