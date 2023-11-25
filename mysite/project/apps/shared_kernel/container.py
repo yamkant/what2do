@@ -2,7 +2,7 @@ from dependency_injector import containers, providers
 
 from apps.user.container import UserContainer
 from apps.todo.container import TodoContainer
-from apps.news.container import PostContainer
+from apps.post.container import PostContainer
 
 
 class AppContainer(containers.DeclarativeContainer):
@@ -10,7 +10,7 @@ class AppContainer(containers.DeclarativeContainer):
         modules=[
             "apps.user.api",
             "apps.todo.api",
-            "apps.news.api",
+            "apps.post.api",
         ]
     )
 

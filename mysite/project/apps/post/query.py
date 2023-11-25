@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import Callable, ContextManager
 
-from apps.news.repository import PostRDBRepository
+from apps.post.repository import PostRDBRepository
 
 
 class PostQueryUseCase:

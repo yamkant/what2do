@@ -1,8 +1,8 @@
 from dependency_injector import containers, providers
 
-from apps.news.repository import PostRDBRepository
-from apps.news.query import PostQueryUseCase
-from apps.news.command import PostCommandUseCase
+from apps.post.repository import PostRDBRepository
+from apps.post.query import PostQueryUseCase
+from apps.post.command import PostCommandUseCase
 from apps.database.connection import get_db
 
 class PostContainer(containers.DeclarativeContainer):

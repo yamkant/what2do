@@ -5,7 +5,7 @@ from apps.shared_kernel.container import AppContainer
 
 from apps.user.api import router as user_router
 from apps.todo.api import router as todo_router
-from apps.news.api import router as post_router
+from apps.post.api import router as post_router
 
 from apps.database.connection import engine
 from apps.database.orm import Base

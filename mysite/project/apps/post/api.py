@@ -3,9 +3,9 @@ from dependency_injector.wiring import Provide, inject
 from starlette import status
 import json
 
-from apps.news.command import PostCommandUseCase
+from apps.post.command import PostCommandUseCase
 from apps.shared_kernel.container import AppContainer
-from apps.news import schema as post_schema
+from apps.post import schema as post_schema
 
 
 router = APIRouter(prefix="/posts")

@@ -3,10 +3,10 @@ from typing import Callable, ContextManager, List
 
 from sqlalchemy.orm import Query, Session
 
-from apps.news.repository import PostRDBRepository
-from apps.news.query import PostQueryUseCase
+from apps.post.repository import PostRDBRepository
+from apps.post.query import PostQueryUseCase
 from apps.database import orm
-from apps.news import schema as post_schema
+from apps.post import schema as post_schema
 
 class PostCommandUseCase:
     def __init__(
