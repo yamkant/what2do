@@ -25,6 +25,7 @@ requests = "^2.31.0"
 bs4 = "^0.0.1"
 selenium = "^4.15.2"
 screeninfo = "^0.8.1"
+alembic = "^1.12.1"
 
 
 [build-system]
