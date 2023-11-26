@@ -21,5 +21,4 @@ class PostQueryUseCase:
     ) -> list[post_schema.NewsPostResponse]:
         with self.db_session() as session:
             post_list = self.post_repo.get_post_list_order_by_id(session=session, skip=params.skip, limit=params.limit)
-        print(post_list)
         return post_list

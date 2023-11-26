@@ -24,7 +24,7 @@ class NewsParser:
             # parsing part
             titles: list[WebElement] = self.driver.find_elements(By.CLASS_NAME, 'js-content-viewer')
             print("NUMBER OF TITLES:", len(titles))
-            time.sleep(3)
+            time.sleep(5)
 
             for title in titles:
                 try:
@@ -32,7 +32,7 @@ class NewsParser:
                     title.click()
                     self.helper.waitForLoadingNewPage(10, title)
 
-                    self.componentParser.set_page_source(self.driver.page_source)
+                    self.componentParser.set_driver(self.driver)
                     ret_json.append(self.componentParser.get_post_compoent().model_dump())
 
                     self.driver.back()
