@@ -36,7 +36,8 @@ function cvtTodoToRequestData(todo) {
 
 function getChartData(todos) {
     const columns = [
-        { type: 'string', id: 'President' },
+        { type: 'string', id: 'todo' },
+        { type: 'string', id: 'content' },
         { type: 'date', id: 'Start' },
         { type: 'date', id: 'End' },
     ];
@@ -47,7 +48,7 @@ function getChartData(todos) {
         const ended_at = getTimeParts(todo.ended_at);
         if (isValidTodoForChart(todo)) {
             rows.push([
-                getTimeTitleByDate(started_at), started_at, ended_at
+                getTimeTitleByDate(todo.started_at), todo.content, started_at, ended_at
             ]);
         }
     });
@@ -74,12 +75,14 @@ function getTimeParts(timeString) {
     const time_parts = timeString.split('T')
     const ymd = time_parts[0].split('-')
     const hms = time_parts[1].split(':')
-    return new Date(ymd[0], ymd[1], ymd[2], hms[0], hms[1], hms[2]);
+    // return new Date(ymd[0], ymd[1], ymd[2], hms[0], hms[1], hms[2]);
+    return new Date(0, 0, 0, hms[0], hms[1], hms[2]);
 }
 
 function getTimeTitleByDate(date) {
-    // return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-    return `${date.getMonth() + 1}-${date.getDate()}`
+    const time_parts = date.split('T')
+    const ymd = time_parts[0].split('-')
+    return `${ymd[1]}-${ymd[2]}`
 }
 
 export {
