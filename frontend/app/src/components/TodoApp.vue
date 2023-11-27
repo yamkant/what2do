@@ -69,13 +69,13 @@ export default {
     setTodoList() {
         this.completed_todos = this.getTodosByCompleted(this.todos, "N");
         this.uncompleted_todos = this.getTodosByCompleted(this.todos, "Y");
+        this.chart_data = getChartData(this.todos);
     },
     async getTodos() {
       try {
         const response = await axiosInstance.get("/todos");
         this.todos = response.data;
         this.setTodoList();
-        this.chart_data = getChartData(this.todos);
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
