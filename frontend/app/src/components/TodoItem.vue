@@ -26,12 +26,14 @@
         <font-awesome-icon icon="fa-solid fa-trash" />
       </button>
     </div>
-    <TodoItemTimeBox :todo="todo" />
+    <TodoItemTimeBox v-if="todo.completed==='N'" :todo="todo" />
+    <TodoItemHistory v-else-if="todo.completed==='Y'" :todo="todo" />
   </li>
 </template>
   
 <script>
 import TodoItemTimeBox from "@/components/TodoItemTimeBox.vue";
+import TodoItemHistory from "@/components/TodoItemHistory.vue";
 import axiosInstance from "../libs"
 import {
   cvtTodoToRequestData,
@@ -39,7 +41,8 @@ import {
 
 export default {
   components: {
-    TodoItemTimeBox
+    TodoItemTimeBox,
+    TodoItemHistory,
   },
   mounted() {
     this.inputValue = this.todo.content
