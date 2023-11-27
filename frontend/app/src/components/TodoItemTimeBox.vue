@@ -66,7 +66,7 @@ export default {
         return ;
       }
 
-      const reqData = cvtTodoToRequestData({ ...this.todo, ended_at:this.endTime})
+      const reqData = cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at:this.endTime})
       try {
         const response = await axiosInstance.patch(
           `/todos/${this.todo.id}`, reqData
