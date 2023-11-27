@@ -1,4 +1,4 @@
-class BaseMsgException(Exception):
+class CustomException(Exception):
     message: str
 
     def __str__(self):

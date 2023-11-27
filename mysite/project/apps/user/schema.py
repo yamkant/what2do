@@ -7,6 +7,7 @@ class UserBase(BaseModel):
 
 class CreateUserRequest(UserBase):
     password: str
+    check_password: str
 
 class LoginUser(UserBase):
     password: str
@@ -23,3 +24,6 @@ class TokenSchema(BaseModel):
     access_token: str
     token_type: str
     email: str
+
+class ExceptionResponseSchema(BaseModel):
+    error: str

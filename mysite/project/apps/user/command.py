@@ -7,6 +7,7 @@ from apps.user.repository import UserRDBRepository
 from apps.user.query import UserQueryUseCase
 from apps.database import orm
 from apps.user import schema as user_schema
+from apps.user.exception import AleadyRegisteredUserException, PasswordDoesNotMatchException
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -26,10 +27,12 @@ class UserCommandUseCase:
         self,
         request: user_schema.CreateUserRequest
     ) -> Optional[user_schema.UserSchema]:
-        # TODO: 적달한 Exception으로 처리
+        if request.password != request.check_password:
+            raise PasswordDoesNotMatchException
+
         new_user = self.user_query.get_user(email=request.email)
         if new_user:
-            return None
+            raise AleadyRegisteredUserException
 
         password = pwd_context.hash(request.password)
         new_user = orm.User(email=request.email, hashed_password=password)
