@@ -70,8 +70,20 @@ export default {
         console.error("Error fetching todos:", err);
       }
     },
-    checkTodo() {
-      this.$emit('toggle', this.todo);
+    async checkTodo() {
+      if (this.todo.completed === 'Y') {
+        await axiosInstance.patch(
+          `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, completed: "N" })
+        ).then((res) => {
+          this.$emit('toggle', { ...this.todo, completed: "N" });
+        });
+      } else if (this.todo.completed === 'N') {
+        const response = await axiosInstance.patch(
+          `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, completed: "Y" })
+        ).then((res) => {
+          this.$emit('toggle', { ...this.todo, completed: "Y" });
+        });
+      }
     },
     async changeTodoContent() {
       try {

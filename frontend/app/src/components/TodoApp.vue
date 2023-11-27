@@ -89,19 +89,12 @@ export default {
       this.setTodoList();
     },
     async checkTodo(todo) {
-      try {
-        if (todo.completed === 'Y') {
-          todo.completed = 'N';
-        } else if (todo.completed === 'N') {
-          todo.completed = 'Y';
+      for (const t of this.todos) {
+        if (t.id === todo.id) {
+          t.completed = todo.completed;
         }
-        const response = await axiosInstance.patch(
-          `/todos/${todo.id}`, cvtTodoToRequestData(todo)
-        );
-        this.setTodoList();
-      } catch (err) {
-        console.error("Error fetching todos:", err);
       }
+      this.setTodoList();
     },
     async changeTodo(todo) {
       this.setTodoList();
