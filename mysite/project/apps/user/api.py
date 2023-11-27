@@ -46,8 +46,6 @@ def post_users(
     user_command: UserCommandUseCase = Depends(Provide[AppContainer.user.user_command]),
 ):
     new_user =  user_command.create_user(request=request)
-    if not new_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
     return new_user
 
 @router.post(

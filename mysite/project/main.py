@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from apps.shared_kernel.container import AppContainer
+from apps.shared_kernel.exception import CustomException
 
 from apps.user.api import router as user_router
 from apps.todo.api import router as todo_router
@@ -37,6 +39,16 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(todo_router)
 app.include_router(post_router)
+
+@app.exception_handler(CustomException)
+async def custom_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.code,
+        content={
+            "error_code": exc.error_code,
+            "message": exc.message,
+        }
+    )
 
 @app.get("/")
 async def read_main():

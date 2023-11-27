@@ -1,4 +1,4 @@
-from apps.shared_kernel.exception import BaseMsgException
+from apps.shared_kernel.exception import CustomException
 
-class TodoContentException(BaseMsgException):
+class TodoContentException(CustomException):
     message = "Content is required."
