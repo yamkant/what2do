@@ -8,9 +8,13 @@
       <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400 space-x-2">
         <font-awesome-icon icon="fa-solid fa-money-bill-trend-up" class="mr-2" />
         <span>{{ title }}
-          <a href="https://flowbite.com"
+          <a
+            v-bind:href="url"
+            target="_blank"
             class="flex items-center ms-0 text-sm font-medium text-blue-600 md:ms-1 md:inline-flex dark:text-blue-500 hover:underline space-x-2"
-          > <span>Open this news</span> <font-awesome-icon icon="fa-solid fa-arrow-up-right-from-square" />
+          >
+            <span>Open this news</span>
+            <font-awesome-icon icon="fa-solid fa-arrow-up-right-from-square" />
           </a>
         </span>
       </p>
@@ -35,6 +39,7 @@ export default {
   data() {
     return {
       title: "",
+      url: "",
       news: [],
       current_index: 0,
     };
@@ -49,6 +54,7 @@ export default {
         const response = await axiosInstance.get("/posts/news");
         this.news = this.shuffle(response.data);
         this.title = this.news[0].title;
+        this.url = this.news[0].url;
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
@@ -56,6 +62,7 @@ export default {
     updateTitle() {
       this.current_index = (this.current_index + 1) % this.news.length;
       this.title = this.news[this.current_index].title
+      this.url = this.news[this.current_index].url
     },
     shuffle(array) { 
       for (let i = array.length - 1; i > 0; i--) { 
