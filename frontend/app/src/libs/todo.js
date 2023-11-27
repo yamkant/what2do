@@ -34,9 +34,44 @@ function cvtTodoToRequestData(todo) {
     return retData;
 }
 
+function getChartData(todos) {
+    const columns = [
+        { type: 'string', id: 'President' },
+        { type: 'date', id: 'Start' },
+        { type: 'date', id: 'End' },
+    ];
+
+    const rows = []
+    todos.forEach((todo) => {
+        const started_at = getTimeParts(todo.started_at);
+        const ended_at = getTimeParts(todo.ended_at);
+        if (started_at && ended_at) {
+            rows.push([
+                getTimeTitleByDate(started_at), started_at, ended_at
+            ]);
+        }
+    });
+    return [columns, ...rows];
+}
+
+function getTimeParts(timeString) {
+    if (!timeString) {
+        return null
+    }
+    const time_parts = timeString.split('T')
+    const ymd = time_parts[0].split('-')
+    const hms = time_parts[1].split(':')
+    return new Date(ymd[0], ymd[1], ymd[2], hms[0], hms[1], hms[2]);
+}
+function getTimeTitleByDate(date) {
+    // return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    return `${date.getMonth() + 1}-${date.getDate()}`
+}
+
 export {
     getTimeNow,
     cvtStringToDate,
     cvtIsoStringToTime,
     cvtTodoToRequestData,
+    getChartData,
 }

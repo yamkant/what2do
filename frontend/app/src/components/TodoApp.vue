@@ -4,7 +4,7 @@
     <AddTodo @todoAdded="handleTodoAdded" />
     <h1>Uncompleted</h1>
     <TodoList
-      :todos="completed_todos"
+      :todos="uncompleted_todos"
       @remove="removeTodo"
       @toggle="checkTodo"
       @changeTodo="changeTodo"
@@ -23,27 +23,32 @@
     </div>
     <TodoList
       v-if="toggle_flag"
-      :todos="uncompleted_todos"
+      :todos="completed_todos"
       @remove="removeTodo"
       @toggle="checkTodo"
+    />
+    <TodoChart
+      :todos="uncompleted_todos"
+      :chart_data="chart_data"
     />
   </div>
 </template>
   
 <script>
 import axiosInstance from "../libs"
-import TodoItem from "@/components/TodoItem.vue";
 import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
+import TodoChart from "./TodoChart.vue";
 import {
   cvtTodoToRequestData,
+  getChartData,
 } from "../libs/todo.js"
 
 export default {
   components: {
-    TodoItem,
     AddTodo,
-    TodoList
+    TodoList,
+    TodoChart
 },
   data() {
     return {
@@ -51,6 +56,7 @@ export default {
       completed_todos: [],
       toggle_flag: false,
       uncompleted_todos: [],
+      chart_data: [],
     }
   },
   mounted() {
@@ -61,14 +67,15 @@ export default {
       return todos.filter(t => t.completed !== status);
     },
     setTodoList() {
-        this.completed_todos = this.getTodosByCompleted(this.todos, "Y");
-        this.uncompleted_todos = this.getTodosByCompleted(this.todos, "N");
+        this.completed_todos = this.getTodosByCompleted(this.todos, "N");
+        this.uncompleted_todos = this.getTodosByCompleted(this.todos, "Y");
     },
     async getTodos() {
       try {
         const response = await axiosInstance.get("/todos");
         this.todos = response.data;
         this.setTodoList();
+        this.chart_data = getChartData(this.todos);
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
@@ -112,7 +119,7 @@ export default {
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
-    }
+    },
   }
 };
 </script>
