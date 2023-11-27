@@ -33,6 +33,9 @@
 <script>
 import TodoItemTimeBox from "@/components/TodoItemTimeBox.vue";
 import axiosInstance from "../libs"
+import {
+  cvtTodoToRequestData,
+} from "../libs/todo.js"
 
 export default {
   components: {
@@ -58,19 +61,28 @@ export default {
       try {
         const response = await axiosInstance.delete(
           `/todos/${this.todo.id}`,
-        );
+        ).then ((res) => {
+          this.$emit('remove', this.todo);
+        });
         // this.todos = this.todos.filter(t => t.id !== todo.id);
         // this.setTodoList();
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
-      this.$emit('remove', this.todo);
     },
     checkTodo() {
       this.$emit('toggle', this.todo);
     },
-    changeTodoContent() {
-      this.$emit('inputChange', { ...this.todo, content: this.inputValue })
+    async changeTodoContent() {
+      try {
+        const response = await axiosInstance.patch(
+          `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, content: this.inputValue })
+        ).then((res) => {
+          this.$emit('inputChange', { ...this.todo, content: this.inputValue })
+        });
+      } catch (err) {
+        console.error("Error fetching todos:", err);
+      }
     },
   }
 };

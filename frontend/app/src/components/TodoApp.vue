@@ -104,14 +104,7 @@ export default {
       }
     },
     async changeTodo(todo) {
-      try {
-        const response = await axiosInstance.patch(
-          `/todos/${todo.id}`, cvtTodoToRequestData(todo)
-        );
-        this.setTodoList();
-      } catch (err) {
-        console.error("Error fetching todos:", err);
-      }
+      this.setTodoList();
     },
   }
 };
