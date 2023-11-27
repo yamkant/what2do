@@ -32,6 +32,7 @@
   
 <script>
 import TodoItemTimeBox from "@/components/TodoItemTimeBox.vue";
+import axiosInstance from "../libs"
 
 export default {
   components: {
@@ -49,7 +50,20 @@ export default {
     todo: Object,
   },
   methods: {
-    removeTodo() {
+    async removeTodo() {
+      if (!confirm("정말 삭제하시겠습니까?")) {
+        return;
+      }
+
+      try {
+        const response = await axiosInstance.delete(
+          `/todos/${this.todo.id}`,
+        );
+        // this.todos = this.todos.filter(t => t.id !== todo.id);
+        // this.setTodoList();
+      } catch (err) {
+        console.error("Error fetching todos:", err);
+      }
       this.$emit('remove', this.todo);
     },
     checkTodo() {

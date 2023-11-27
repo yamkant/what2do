@@ -85,15 +85,8 @@ export default {
       this.setTodoList();
     },
     async removeTodo(todo) {
-      try {
-        const response = await axiosInstance.delete(
-          `/todos/${todo.id}`,
-        );
-        this.todos = this.todos.filter(t => t.id !== todo.id);
-        this.setTodoList();
-      } catch (err) {
-        console.error("Error fetching todos:", err);
-      }
+      this.todos = this.todos.filter(t => t.id !== todo.id);
+      this.setTodoList();
     },
     async checkTodo(todo) {
       try {
