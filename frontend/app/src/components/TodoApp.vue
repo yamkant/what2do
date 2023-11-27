@@ -79,7 +79,7 @@ export default {
       }
     },
     addTodo(newTodo) {
-      this.todos.push(newTodo);
+      this.todos.unshift(newTodo);
       this.setTodoList();
     },
     removeTodo(todo) {
