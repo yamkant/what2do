@@ -44,5 +44,6 @@ class Post(Base):
     title = Column(String)
     author = Column(String)
     body = Column(String)
+    url = Column(String)
 
     published_at = Column(String)

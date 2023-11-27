@@ -32,7 +32,7 @@ async def post_news_upload(
             raise HTTPException(status_code=400, detail="Invalid JSON format in file")
     return ret
 
-@router.get("/news", response_model=list[post_schema.NewsPostResponse])
+@router.get("/news", response_model=list[post_schema.PostSchema])
 @inject
 async def post_news_upload(
     params: post_schema.Page = Depends(),

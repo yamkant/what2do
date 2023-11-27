@@ -1,12 +1,14 @@
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
 from typing import Optional
+from selenium import webdriver
 
 class PostComponent(BaseModel):
     title: Optional[str]
     published_at: Optional[str]
     author: Optional[str]
     body: Optional[str]
+    url: Optional[str]
 
 class PostComponentParser:
     def __init__(
@@ -14,9 +16,11 @@ class PostComponentParser:
     ) -> None:
         pass
     
-    def set_page_source(self, page_source):
-        self.page_source = page_source
-        self.soup: BeautifulSoup = BeautifulSoup(page_source, 'html.parser')
+    def set_driver(self, driver: webdriver):
+        self.driver = driver
+        self.page_source = driver.page_source
+        self.url = driver.current_url
+        self.soup: BeautifulSoup = BeautifulSoup(self.page_source, 'html.parser')
     
     def get_text_in_elem(self, elem) -> str:
         return elem.text.strip() if elem else None
@@ -40,11 +44,15 @@ class PostComponentParser:
             ret.append(self.get_text_in_elem(post_body))
         return ret
     
+    def get_url(self) -> str:
+        return self.url
+    
     def get_post_compoent(self) -> PostComponent:
         ret = {
             'title': self.get_title(),
             'published_at': self.get_time(),
             'author': self.get_authors(),
             'body': ''.join(self.get_body_list()),
+            'url': self.get_url(),
         }
         return PostComponent(**ret)
