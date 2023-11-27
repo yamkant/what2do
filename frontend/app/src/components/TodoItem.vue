@@ -57,44 +57,41 @@ export default {
       if (!confirm("정말 삭제하시겠습니까?")) {
         return;
       }
-
-      try {
-        const response = await axiosInstance.delete(
-          `/todos/${this.todo.id}`,
-        ).then ((res) => {
-          this.$emit('remove', this.todo);
-        });
-        // this.todos = this.todos.filter(t => t.id !== todo.id);
-        // this.setTodoList();
-      } catch (err) {
-        console.error("Error fetching todos:", err);
-      }
+      await axiosInstance.delete(
+        `/todos/${this.todo.id}`,
+      ).then(() => {
+        this.$emit('remove', this.todo);
+      }).catch((err) => {
+        console.error("Error removing todos:", err);
+      });
     },
     async checkTodo() {
       if (this.todo.completed === 'Y') {
         await axiosInstance.patch(
           `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, completed: "N" })
-        ).then((res) => {
+        ).then(() => {
           this.$emit('toggle', { ...this.todo, completed: "N" });
-        });
+        }).catch((err) => {
+          console.error("Error complete todo:", err);
+        })
       } else if (this.todo.completed === 'N') {
-        const response = await axiosInstance.patch(
+        await axiosInstance.patch(
           `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, completed: "Y" })
-        ).then((res) => {
+        ).then(() => {
           this.$emit('toggle', { ...this.todo, completed: "Y" });
-        });
+        }).catch((err) => {
+          console.error("Error complete todo:", err);
+        })
       }
     },
     async changeTodoContent() {
-      try {
-        const response = await axiosInstance.patch(
-          `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, content: this.inputValue })
-        ).then((res) => {
-          this.$emit('inputChange', { ...this.todo, content: this.inputValue })
-        });
-      } catch (err) {
-        console.error("Error fetching todos:", err);
-      }
+      await axiosInstance.patch(
+        `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, content: this.inputValue })
+      ).then(() => {
+        this.$emit('inputChange', { ...this.todo, content: this.inputValue })
+      }).catch((err) => {
+        console.error("Error changing todo content:", err);
+      })
     },
   }
 };

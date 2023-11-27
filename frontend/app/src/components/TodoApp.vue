@@ -1,7 +1,7 @@
 <template>
   <h1>Todo List</h1>
   <div class="space-y-2">
-    <AddTodo @todoAdded="handleTodoAdded" />
+    <AddTodo @todoAdded="addTodo" />
     <h1>Uncompleted</h1>
     <TodoList
       :todos="uncompleted_todos"
@@ -16,8 +16,7 @@
             type="checkbox" value="" class="sr-only peer"
             @change="toggle_flag = !toggle_flag"
           >
-          <div
-            class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
           ></div>
       </label>
     </div>
@@ -40,7 +39,6 @@ import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
 import TodoChart from "./TodoChart.vue";
 import {
-  cvtTodoToRequestData,
   getChartData,
 } from "../libs/todo.js"
 
@@ -80,15 +78,15 @@ export default {
         console.error("Error fetching todos:", err);
       }
     },
-    handleTodoAdded(newTodo) {
+    addTodo(newTodo) {
       this.todos.push(newTodo);
       this.setTodoList();
     },
-    async removeTodo(todo) {
+    removeTodo(todo) {
       this.todos = this.todos.filter(t => t.id !== todo.id);
       this.setTodoList();
     },
-    async checkTodo(todo) {
+    checkTodo(todo) {
       for (const t of this.todos) {
         if (t.id === todo.id) {
           t.completed = todo.completed;
