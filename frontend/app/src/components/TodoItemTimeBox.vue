@@ -46,15 +46,14 @@ export default {
       this.startTime = getTimeNow();
       this.activateEndTime();
 
-      try {
-        const response = await axiosInstance.patch(
-          `/todos/${this.todo.id}`,
-          cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at: null})
-        );
+      await axiosInstance.patch(
+        `/todos/${this.todo.id}`,
+        cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at: null})
+      ).then(() => {
         this.endTime = ""
-      }catch (err) {
-        console.error("Error fetching todos:", err);
-      }
+      }).catch((err) => {
+        console.error("Error updating todo start time:", err);
+      });
     },
     async setEndTimeNow() {
       if (!this.isEndTimeEnabled) {
@@ -63,24 +62,22 @@ export default {
       }
       this.endTime = getTimeNow();
       if (!this.isValidateEndTime()) {
+        this.endTime = ""
         return ;
       }
 
-      const reqData = cvtTodoToRequestData({ ...this.todo, completed: "Y", started_at:this.startTime, ended_at:this.endTime})
-      try {
-        const response = await axiosInstance.patch(
-          `/todos/${this.todo.id}`,
-          cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at: null})
-        );
+      await axiosInstance.patch(
+        `/todos/${this.todo.id}`,
+        cvtTodoToRequestData({ ...this.todo, completed: "Y", started_at:this.startTime, ended_at:this.endTime})
+      ).then(() => {
         location.reload()
-      }catch (err) {
-        console.error("Error fetching todos:", err);
-      }
+      }).catch ((err) => {
+        console.error("Error updating todo end time:", err);
+      })
     },
     isValidateEndTime() {
       if (this.endTime < this.startTime) {
         alert('시작 시간보다 이후의 시간으로 등록해야합니다.')
-        this.endTime = '';
         return false
       }
       return true
