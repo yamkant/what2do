@@ -18,6 +18,7 @@ class PostSchema(BaseModel):
     published_at: str
     author: str
     body: str
+    url: str
 
     class Config:
         orm_mode = True
