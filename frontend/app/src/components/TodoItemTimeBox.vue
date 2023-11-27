@@ -46,10 +46,10 @@ export default {
       this.startTime = getTimeNow();
       this.activateEndTime();
 
-      const reqData = cvtTodoToRequestData({ ...this.todo, started_at:this.startTime})
       try {
         const response = await axiosInstance.patch(
-          `/todos/${this.todo.id}`, reqData
+          `/todos/${this.todo.id}`,
+          cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at: null})
         );
         this.endTime = ""
       }catch (err) {
@@ -66,11 +66,13 @@ export default {
         return ;
       }
 
-      const reqData = cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at:this.endTime})
+      const reqData = cvtTodoToRequestData({ ...this.todo, completed: "Y", started_at:this.startTime, ended_at:this.endTime})
       try {
         const response = await axiosInstance.patch(
-          `/todos/${this.todo.id}`, reqData
+          `/todos/${this.todo.id}`,
+          cvtTodoToRequestData({ ...this.todo, started_at:this.startTime, ended_at: null})
         );
+        location.reload()
       }catch (err) {
         console.error("Error fetching todos:", err);
       }
