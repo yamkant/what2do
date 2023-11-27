@@ -56,10 +56,14 @@ export default {
             email: this.email,
             password: this.password,
           }
-        );
-
-        this.$cookies.set('auth_token', response.data.access_token)
-        this.$router.push('/');
+        ).then((res) => {
+          this.$cookies.set('auth_token', res.data.access_token)
+          this.$router.push('/');
+        }).catch((err) => {
+          if (err.response.status === 401) {
+            alert("이메일 혹은 비밀번호를 확인해주세요.")
+          }
+        });
       } catch (err) {
         console.error("Error login process:", err);
       }

@@ -27,7 +27,7 @@
       <div>
         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >Check password</label>
-        <input type="password" id="password"
+        <input type="password" id="check_password"
           v-model="check_password"
           class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
           placeholder="********"
@@ -66,8 +66,23 @@ export default {
           {
             email: this.email,
             password: this.password,
+            check_password: this.check_password,
           }
-        );
+        ).then((res) => {
+          if (res) {
+            alert('회원가입이 완료되었습니다.')
+            this.$router.push('/login');
+          }
+        }).catch((err) => {
+          if (err.response.status === 400) {
+            if (err.response.data.error_code === "USER__ALREADY_REGISTERED") {
+              alert('이미 가입된 계정입니다.')
+            }
+            if (err.response.data.error_code === "USER__PASSWORD_DOES_NOT_MATCH") {
+              alert('비밀번호가 일치하지 않습니다.')
+            }
+          }
+        });
       } catch (err) {
         console.error("Error signup process:", err);
       }
