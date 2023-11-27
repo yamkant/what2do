@@ -32,6 +32,10 @@
   
 <script>
 import TodoItemTimeBox from "@/components/TodoItemTimeBox.vue";
+import axiosInstance from "../libs"
+import {
+  cvtTodoToRequestData,
+} from "../libs/todo.js"
 
 export default {
   components: {
@@ -49,14 +53,45 @@ export default {
     todo: Object,
   },
   methods: {
-    removeTodo() {
-      this.$emit('remove', this.todo);
+    async removeTodo() {
+      if (!confirm("정말 삭제하시겠습니까?")) {
+        return;
+      }
+      await axiosInstance.delete(
+        `/todos/${this.todo.id}`,
+      ).then(() => {
+        this.$emit('remove', this.todo);
+      }).catch((err) => {
+        console.error("Error removing todos:", err);
+      });
     },
-    checkTodo() {
-      this.$emit('toggle', this.todo);
+    async checkTodo() {
+      if (this.todo.completed === 'Y') {
+        await axiosInstance.patch(
+          `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, completed: "N" })
+        ).then(() => {
+          this.$emit('toggle', { ...this.todo, completed: "N" });
+        }).catch((err) => {
+          console.error("Error complete todo:", err);
+        })
+      } else if (this.todo.completed === 'N') {
+        await axiosInstance.patch(
+          `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, completed: "Y" })
+        ).then(() => {
+          this.$emit('toggle', { ...this.todo, completed: "Y" });
+        }).catch((err) => {
+          console.error("Error complete todo:", err);
+        })
+      }
     },
-    changeTodoContent() {
-      this.$emit('inputChange', { ...this.todo, content: this.inputValue })
+    async changeTodoContent() {
+      await axiosInstance.patch(
+        `/todos/${this.todo.id}`, cvtTodoToRequestData({ ...this.todo, content: this.inputValue })
+      ).then(() => {
+        this.$emit('inputChange', { ...this.todo, content: this.inputValue })
+      }).catch((err) => {
+        console.error("Error changing todo content:", err);
+      })
     },
   }
 };
