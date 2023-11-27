@@ -20,9 +20,14 @@ export default {
       options: {
         width: "60%",
         height: 800,
-        // timeline: { colorByRowLabel: true },
-        // alternatingRowStyle: false
+        timeline: { colorByRowLabel: true },
+        hAxis: {
+          format: 'HH:mm', // 시간 형식 지정
+        },
       },
+      timeline: {
+          showRowLabels: false
+        },
       settings: {
         packages: ['timeline'],
       },
