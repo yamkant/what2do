@@ -3,6 +3,8 @@ import VueCookies from "vue-cookies";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+  // baseURL: '/api',
+  withCredentials: false, // CORS 요청에 대한 쿠키 전송 여부 설정
 });
 
 axiosInstance.interceptors.request.use(

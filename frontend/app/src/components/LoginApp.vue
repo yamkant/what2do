@@ -49,9 +49,9 @@ export default {
   methods: {
     async login() {
       try {
-        const api_url = import.meta.env.VITE_API_URL;
-        const response = await axios.post(
-          `${api_url}/users/login`,
+        this.$cookies.set('auth_token', "")
+        const response = await this.$axios.post(
+          '/users/login',
           {
             email: this.email,
             password: this.password,
@@ -62,6 +62,8 @@ export default {
         }).catch((err) => {
           if (err.response.status === 401) {
             alert("이메일 혹은 비밀번호를 확인해주세요.")
+          } else {
+            alert("네트워크 오류입니다.")
           }
         });
       } catch (err) {

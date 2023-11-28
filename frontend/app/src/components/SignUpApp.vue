@@ -60,9 +60,8 @@ export default {
   methods: {
     async signUp() {
       try {
-        const api_url = import.meta.env.VITE_API_URL;
-        const response = await axios.post(
-          `${api_url}/users`,
+        const response = await this.$axios.post(
+          `/users`,
           {
             email: this.email,
             password: this.password,
@@ -81,6 +80,8 @@ export default {
             if (err.response.data.error_code === "USER__PASSWORD_DOES_NOT_MATCH") {
               alert('비밀번호가 일치하지 않습니다.')
             }
+          } else {
+            alert("네트워크 오류입니다.")
           }
         });
       } catch (err) {
