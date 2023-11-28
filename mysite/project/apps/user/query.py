@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 
 from apps.user.repository import UserRDBRepository
-from apps.user.exception import InvalidTokenException
+from apps.user.exception import InvalidTokenException, WrongLoginInfoUserException
 from fastapi.security import OAuth2PasswordBearer
 from apps.database import orm
 from apps.user import schema
@@ -40,8 +40,10 @@ class UserQueryUseCase:
         request: schema.LoginUser,
     ) -> schema.TokenSchema:
         user = self.get_user(request.email)
-        if not user or not pwd_context.verify(request.password, user.hashed_password):
-            raise InvalidTokenException()
+        if not user:
+            raise InvalidTokenException
+        if  not pwd_context.verify(request.password, user.hashed_password):
+            raise WrongLoginInfoUserException
 
         data = {
             "sub": user.email,

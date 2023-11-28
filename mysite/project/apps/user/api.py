@@ -8,7 +8,7 @@ from apps.user import repository, schema
 from apps.database import connection
 from apps.user.query import UserQueryUseCase, oauth2_scheme, SECRET_KEY, ALGORITHM
 from apps.user.command import UserCommandUseCase
-from apps.user.exception import InvalidTokenException
+from apps.user.exception import InvalidTokenException, WrongLoginInfoUserException
 from apps.shared_kernel.container import AppContainer
 
 
@@ -58,12 +58,5 @@ def login_for_access_token(
     user_query: UserQueryUseCase = Depends(Provide[AppContainer.user.user_query]),
 ) -> schema.TokenSchema:
 
-    try:
-        token_schema = user_query.get_token_schema(request)
-    except InvalidTokenException:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    token_schema = user_query.get_token_schema(request)
     return token_schema
