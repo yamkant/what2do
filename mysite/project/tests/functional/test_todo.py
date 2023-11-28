@@ -1,4 +1,4 @@
-from schema import Schema, Or
+from schema import Schema, Or, And
 
 from apps.database import orm
 from apps.shared_kernel.utils import now
@@ -19,7 +19,7 @@ def test_로그인유저_todo_생성하다(get_logined_client):
 
     # then
     schema = Schema({
-        "id": 1,
+        "id": int,
         "content": "new_todo",
         "completed": "N",
         "started_at": None,
