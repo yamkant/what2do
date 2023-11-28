@@ -24,17 +24,6 @@ def test_db():
 def client(test_db):
     return TestClient(app)
 
-@pytest.fixture
-def create_user(client):
-    response = client.post(
-        "/users/",
-        json={
-            "email": "tester@example.com", 
-            "password": "5933", 
-            "check_password": "5933", 
-        },
-    )
-
 @pytest.fixture(scope="function")
 def create_test_user(client):
     response = client.post(
@@ -46,8 +35,8 @@ def create_test_user(client):
         },
     )
 
-@pytest.fixture
-def get_logined_client(client, create_user):
+@pytest.fixture(scope="function")
+def get_logined_client(client, create_test_user):
 
     response = client.post(
         "users/login/",
