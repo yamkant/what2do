@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from main import app
+from apps.shared_kernel.server import app
 from apps.database.connection import SessionFactory
 from apps.database.orm import Base
 
@@ -31,6 +31,7 @@ def create_user(client):
         json={
             "email": "tester@example.com", 
             "password": "5933", 
+            "check_password": "5933", 
         },
     )
 
