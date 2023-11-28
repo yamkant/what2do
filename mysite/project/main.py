@@ -1,6 +1,11 @@
+import os
+import uvicorn
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+from apps.shared_kernel.config import config
 
 from apps.shared_kernel.container import AppContainer
 from apps.shared_kernel.exception import CustomException
@@ -54,3 +59,19 @@ async def custom_exception_handler(request, exc):
 @app.get("/")
 async def read_main():
     return {"msg": "Hello World"}
+
+
+def main(env: str, debug: bool):
+    os.environ["ENV"] = env
+    os.environ["DEBUG"] = str(debug)
+    uvicorn.run(
+        app=app,
+        host=config.APP_HOST,
+        port=config.APP_PORT,
+        reload=True if config.ENV != "production" else False,
+        workers=1,
+    )
+
+
+if __name__ == "__main__":
+    main()
