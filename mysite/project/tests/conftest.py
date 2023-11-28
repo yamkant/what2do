@@ -35,6 +35,17 @@ def create_user(client):
         },
     )
 
+@pytest.fixture(scope="function")
+def create_test_user(client):
+    response = client.post(
+        "/users/",
+        json={
+            "email": "tester@example.com", 
+            "password": "5933", 
+            "check_password": "5933", 
+        },
+    )
+
 @pytest.fixture
 def get_logined_client(client, create_user):
 
