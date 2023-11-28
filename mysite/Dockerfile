@@ -10,4 +10,4 @@ RUN pip3 install poetry
 
 EXPOSE 8000
 RUN poetry install
-ENTRYPOINT [ "poetry" ,"run", "uvicorn", "main:app", "--host", "0.0.0.0" ]
+ENTRYPOINT [ "poetry" ,"run", "uvicorn", "apps.shared_kernel.server:app", "--host", "0.0.0.0" ]
