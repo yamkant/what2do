@@ -43,6 +43,10 @@
 - 프로젝트를 Docker container로 구성하여 Docker compose를 사용한 빠른 배포환경을 설정하였습니다.
 - google chart를 사용하여 하루 수행한 투두 리스트를 시간순서로 나열합니다.
 
+### 크롤링 기능
+- 크롤링 관련 기능에 대한 내용은 [여기](./mysite/project/apps/news/)에서 보실 수 있습니다.
+- [yahoo! finance](https://finance.yahoo.com/news/) 페이지를 기반으로 크롤링 작업을 진행 중에 있습니다.
+
 ### 앞으로 구현해나갈 항목
 - [ ] papago 번역 API를 사용해서 미국 뉴스 크롤링, 번역 이후 저장하도록
 - [ ] 단위 테스트 및 API 테스트 항목들 꾸준히 추가해 나가기
