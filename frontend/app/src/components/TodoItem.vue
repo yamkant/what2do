@@ -1,7 +1,7 @@
 <template>
   <li class="flex flex-col px-2">
     <div class="flex justify-between h-8">
-      <div class="flex items-center">
+      <div class="flex items-center w-full">
         <svg v-if="todo.completed === 'N'"
           class="w-6 h-6 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0 cursor-pointer" aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" @click="checkTodo">
@@ -20,7 +20,7 @@
           <label for="checkbox-e4ec4dd7-d4f8-45ae-9ec7-57339b937677">
           </label>
         </button>
-        <input @change="changeTodoContent" v-model="inputValue" />
+        <input class="w-full" @change="changeTodoContent" v-model="inputValue" />
       </div>
       <button @click="removeTodo" class="hover:bg-gray-100 w-8 rounded-full">
         <font-awesome-icon icon="fa-solid fa-trash" />
