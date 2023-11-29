@@ -27,6 +27,7 @@ selenium = "^4.15.2"
 screeninfo = "^0.8.1"
 alembic = "^1.12.1"
 pydantic-settings = "^2.1.0"
+psycopg2-binary = "^2.9.9"
 
 
 [build-system]
