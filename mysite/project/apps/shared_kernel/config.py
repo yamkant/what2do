@@ -13,13 +13,18 @@ class Config(BaseSettings):
     JWT_EXIPRE_MINUTES: int = 60 * 24
 
 class LocalConfig(Config):
-    WRITER_DB_URL: str = f"sqlite:///./sql_app.db"
-    READER_DB_URL: str = f"sqlite:///./sql_app.db"
+    WRITER_DB_URL: str = f"postgresql://postgres:postgres@localhost:5432/what2do"
+    READER_DB_URL: str = f"postgresql://postgres:postgres@localhost:5432/what2do"
+
+class ProductionConfig(Config):
+    WRITER_DB_URL: str = f"postgresql://postgres:postgres@db:5432/what2do"
+    READER_DB_URL: str = f"postgresql://postgres:postgres@db:5432/what2do"
 
 def get_config():
     env = os.getenv("ENV", "local")
     config_type = {
         "local": LocalConfig(),
+        "prod": ProductionConfig(),
     }
     return config_type[env]
 
