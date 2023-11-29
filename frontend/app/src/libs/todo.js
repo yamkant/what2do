@@ -20,7 +20,6 @@ function cvtIsoStringToTime(isoString) {
     }
     const isoTimePart = isoString.split('+')[0]
     const convertedTime = isoTimePart.split('T')[1]
-    console.log(isoTimePart, convertedTime)
     return convertedTime;
 }
 

@@ -73,7 +73,6 @@ export default {
         const response = await this.$axios.get("/todos");
         this.todos = response.data;
         this.setTodoList();
-        console.log(this.todos)
       } catch (err) {
         console.error("Error fetching todos:", err);
       }
