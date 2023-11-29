@@ -34,8 +34,6 @@
 </template>
   
 <script>
-import axios from 'axios'
-import VueCookies from "vue-cookies";
 import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
 import TodoChart from "./TodoChart.vue";
@@ -72,10 +70,10 @@ export default {
     },
     async getTodos() {
       try {
-        const token = VueCookies.get('auth_token');
         const response = await this.$axios.get("/todos");
         this.todos = response.data;
         this.setTodoList();
+        console.log(this.todos)
       } catch (err) {
         console.error("Error fetching todos:", err);
       }

@@ -18,7 +18,10 @@ function cvtIsoStringToTime(isoString) {
     if (!isoString) {
         return "";
     }
-    return isoString.substring(isoString.length - 8, isoString.length - 3);
+    const isoTimePart = isoString.split('+')[0]
+    const convertedTime = isoTimePart.split('T')[1]
+    console.log(isoTimePart, convertedTime)
+    return convertedTime;
 }
 
 function cvtTodoToRequestData(todo) {
@@ -72,7 +75,8 @@ function getTimeParts(timeString) {
     if (!timeString) {
         return null
     }
-    const time_parts = timeString.split('T')
+    const cvtTimeString = timeString.split('+')[0]
+    const time_parts = cvtTimeString.split('T')
     const ymd = time_parts[0].split('-')
     const hms = time_parts[1].split(':')
     // return new Date(ymd[0], ymd[1], ymd[2], hms[0], hms[1], hms[2]);
