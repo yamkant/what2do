@@ -25,7 +25,8 @@ function cvtIsoStringToTime(isoString) {
 
 function cvtTodoToRequestData(todo) {
     const retData = {}
-    const isoDateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+    // const isoDateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+    const isoDateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/;
     for (let key in todo) {
         if (todo[key] && isoDateTimePattern.test(todo[key])) {
             retData[key] = cvtIsoStringToTime(todo[key]);
