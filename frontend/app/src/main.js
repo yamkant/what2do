@@ -18,13 +18,17 @@ import {
     faFire
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import moment from 'moment';
+import 'moment-timezone'
 
+moment.tz.setDefault('Asia/Seoul');
 
 library.add(faUserSecret, faCirclePlay, faCircleStop, faMoneyBillTrendUp, faArrowUpRightFromSquare, faTrash, faFire)
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axiosInstance;
 app.use(VueCookies)
+app.provide('moment', moment)
 app.use(store)
 app.use(routers)
 app.component('font-awesome-icon', FontAwesomeIcon)
