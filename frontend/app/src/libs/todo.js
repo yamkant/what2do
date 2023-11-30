@@ -1,5 +1,7 @@
+import moment from 'moment';
+
 function getTimeNow() {
-    const now = new Date();
+    const now = moment().getDate();
     function padZero(value) {
         return value < 10 ? `0${value}` : value;
     }
@@ -7,29 +9,22 @@ function getTimeNow() {
     return formattedDateTime.substring(formattedDateTime.length - 5)
 }
 
-function cvtStringToDate(timeStr) {
-    const currentDate = new Date();
-    const [hours, minutes] = timeStr.split(':');
-    const timeDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), hours, minutes);
-    return timeDate;
-}
-
-function getTimeParts(timeString) {
+function cvtTimeStringToHMSDate(timeString) {
     if (!timeString) {
         return null
     }
-    const date = new Date(timeString);
+    const date = moment(timeString).toDate();
     const h = date.getHours();
     const m = date.getMinutes();
     const s = date.getSeconds();
     return new Date(0, 0, 0, h, m, s);
 }
 
-function cvtIsoStringToTime(timeString) {
+function cvtStringToHMSString(timeString) {
     if (!timeString) {
         return "";
     }
-    const date = new Date(timeString);
+    const date = moment(timeString).toDate();
     const h = String(date.getHours()).padStart(2, '0');
     const m = String(date.getMinutes()).padStart(2, '0');
     const s = String(date.getSeconds()).padStart(2, '0');
@@ -52,7 +47,7 @@ function cvtTodoToRequestData(todo) {
     const retData = {}
     for (let key in todo) {
         if (todo[key] && isTimeFormat(todo[key])) {
-            retData[key] = cvtIsoStringToTime(todo[key]);
+            retData[key] = cvtStringToHMSString(todo[key]);
         } else {
             retData[key] = todo[key];
         }
@@ -70,8 +65,8 @@ function getChartData(todos) {
 
     const rows = []
     todos.forEach((todo) => {
-        const started_at = getTimeParts(todo.started_at);
-        const ended_at = getTimeParts(todo.ended_at);
+        const started_at = cvtTimeStringToHMSDate(todo.started_at);
+        const ended_at = cvtTimeStringToHMSDate(todo.ended_at);
         if (isValidTodoForChart(todo)) {
             rows.push([
                 getTimeTitleByDate(todo.started_at), todo.content, started_at, ended_at
@@ -102,8 +97,7 @@ function getTimeTitleByDate(date) {
 
 export {
     getTimeNow,
-    cvtStringToDate,
-    cvtIsoStringToTime,
+    cvtStringToHMSString,
     cvtTodoToRequestData,
     getChartData,
 }

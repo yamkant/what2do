@@ -1,9 +1,9 @@
 <template>
-  <div v-if="validTimeSpent" class="flex justify-start ml-10 space-x-3">
+  <div v-if="validTimeSpent" class="w-full flex justify-start ml-10 space-x-3">
     <span>
       <font-awesome-icon icon="fa-solid fa-fire" />
     </span>
-    <div class="w-10">{{ timeSpent }}분</div>
+    <div class="w-full">{{ timeSpent }}분</div>
   </div>
 </template>
   

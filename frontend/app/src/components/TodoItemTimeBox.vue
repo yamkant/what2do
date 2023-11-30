@@ -16,14 +16,14 @@
 import axiosInstance from "../libs"
 import {
   getTimeNow,
-  cvtIsoStringToTime,
+  cvtStringToHMSString,
   cvtTodoToRequestData,
 } from "../libs/todo.js"
 
 export default {
   mounted() {
-    this.startTime = cvtIsoStringToTime(this.todo.started_at)
-    this.endTime = cvtIsoStringToTime(this.todo.ended_at)
+    this.startTime = cvtStringToHMSString(this.todo.started_at)
+    this.endTime = cvtStringToHMSString(this.todo.ended_at)
     this.activateEndTime()
   },
   data() {
