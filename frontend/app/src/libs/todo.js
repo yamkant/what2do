@@ -14,21 +14,44 @@ function cvtStringToDate(timeStr) {
     return timeDate;
 }
 
-function cvtIsoStringToTime(isoString) {
-    if (!isoString) {
+function getTimeParts(timeString) {
+    if (!timeString) {
+        return null
+    }
+    const date = new Date(timeString);
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const s = date.getSeconds();
+    return new Date(0, 0, 0, h, m, s);
+}
+
+function cvtIsoStringToTime(timeString) {
+    if (!timeString) {
         return "";
     }
-    const isoTimePart = isoString.split('+')[0]
-    const convertedTime = isoTimePart.split('T')[1]
-    return convertedTime;
+    const date = new Date(timeString);
+    const h = String(date.getHours()).padStart(2, '0');
+    const m = String(date.getMinutes()).padStart(2, '0');
+    const s = String(date.getSeconds()).padStart(2, '0');
+    return `${h}:${m}:${s}`;
+}
+
+function isTimeFormat(timeString) {
+    let offsetPattern = /([+-]\d{2}):(\d{2})$/;
+    if (offsetPattern.test(timeString)) {
+         return true;
+    }
+    offsetPattern = /Z$/;
+    if (offsetPattern.test(timeString)) {
+         return true;
+    }
+    return false;
 }
 
 function cvtTodoToRequestData(todo) {
     const retData = {}
-    // const isoDateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
-    const isoDateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/;
     for (let key in todo) {
-        if (todo[key] && isoDateTimePattern.test(todo[key])) {
+        if (todo[key] && isTimeFormat(todo[key])) {
             retData[key] = cvtIsoStringToTime(todo[key]);
         } else {
             retData[key] = todo[key];
@@ -69,18 +92,6 @@ function isValidTodoForChart(todo) {
         return false;
     }
     return true;
-}
-
-function getTimeParts(timeString) {
-    if (!timeString) {
-        return null
-    }
-    const cvtTimeString = timeString.split('+')[0]
-    const time_parts = cvtTimeString.split('T')
-    const ymd = time_parts[0].split('-')
-    const hms = time_parts[1].split(':')
-    // return new Date(ymd[0], ymd[1], ymd[2], hms[0], hms[1], hms[2]);
-    return new Date(0, 0, 0, hms[0], hms[1], hms[2]);
 }
 
 function getTimeTitleByDate(date) {
