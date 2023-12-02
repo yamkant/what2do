@@ -1,14 +1,18 @@
 <template>
-  <div class="flex justify-end space-x-5">
-    <label for="startTime" @click="setStartTimeNow" class="cursor-pointer">
-      <font-awesome-icon icon="fa-solid fa-circle-play" />
-    </label>
-    <input type="time" v-model="startTime" @change="setStartTimeCustomized" class="w-28"/>
+  <div class="flex justify-end space-x-3">
+    <div class="space-x-2">
+      <label for="startTime" @click="setStartTimeNow" class="cursor-pointer">
+        <font-awesome-icon icon="fa-solid fa-circle-play" />
+      </label>
+      <input type="time" v-model="startTime" @change="setStartTimeCustomized" class="w-28"/>
+    </div>
 
-    <label for="endTime" @click="setEndTimeNow" class="cursor-pointer">
-      <font-awesome-icon icon="fa-solid fa-circle-stop" />
-    </label>
-    <input type="time" v-model="endTime" :disabled="!isEndTimeEnabled" @input="setEndTimeCustomized" class="w-28"/>
+    <div class="space-x-3">
+      <label for="endTime" @click="setEndTimeNow" class="cursor-pointer">
+        <font-awesome-icon icon="fa-solid fa-circle-stop" />
+      </label>
+      <input type="time" v-model="endTime" :disabled="!isEndTimeEnabled" @input="setEndTimeCustomized" class="w-28"/>
+    </div>
   </div>
 </template>
   

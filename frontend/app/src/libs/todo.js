@@ -1,5 +1,10 @@
 import moment from 'moment';
 
+function getKoreanNow() {
+    const date = moment().toDate();
+    return date;
+}
+
 function getTimeNow() {
     const now = moment().toDate();
     function padZero(value) {
@@ -34,11 +39,15 @@ function cvtStringToHMSString(timeString) {
 function isTimeFormat(timeString) {
     let offsetPattern = /([+-]\d{2}):(\d{2})$/;
     if (offsetPattern.test(timeString)) {
-         return true;
+        return true;
+    }
+    offsetPattern = /^\d{4}-\d{2}-\d{2}T/;
+    if (offsetPattern.test(timeString)) {
+        return true;
     }
     offsetPattern = /Z$/;
     if (offsetPattern.test(timeString)) {
-         return true;
+        return true;
     }
     return false;
 }
@@ -52,6 +61,7 @@ function cvtTodoToRequestData(todo) {
             retData[key] = todo[key];
         }
     }
+    console.log("REQ DATA:", retData)
     return retData;
 }
 
@@ -96,6 +106,7 @@ function getTimeTitleByDate(date) {
 }
 
 export {
+    getKoreanNow,
     getTimeNow,
     cvtStringToHMSString,
     cvtTodoToRequestData,
