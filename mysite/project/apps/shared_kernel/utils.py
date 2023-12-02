@@ -18,4 +18,6 @@ def get_current_time():
     )
 
 def combine_datetime_to_now(value):
-    return datetime.combine(now(), value)
+    # ret = datetime.combine(now(), value)
+    ret = now().replace(hour=value.hour, minute=value.minute, second=value.second)
+    return ret

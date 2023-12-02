@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 function getTimeNow() {
-    const now = moment().getDate();
+    const now = moment().toDate();
     function padZero(value) {
         return value < 10 ? `0${value}` : value;
     }
