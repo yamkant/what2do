@@ -1,4 +1,5 @@
 <template>
+  <StopWatch />
   <h1>Todo List</h1>
   <div class="space-y-2">
     <AddTodo @todoAdded="addTodo" />
@@ -37,6 +38,7 @@
 import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
 import TodoChart from "./TodoChart.vue";
+import StopWatch from './StopWatch.vue';
 import {
   getChartData,
 } from "../libs/todo.js"
@@ -45,7 +47,8 @@ export default {
   components: {
     AddTodo,
     TodoList,
-    TodoChart
+    TodoChart,
+    StopWatch,
 },
   data() {
     return {

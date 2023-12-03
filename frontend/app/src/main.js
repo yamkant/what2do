@@ -15,7 +15,9 @@ import {
     faMoneyBillTrendUp,
     faArrowUpRightFromSquare,
     faTrash,
-    faFire
+    faFire,
+    faPlay,
+    faStop,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import moment from 'moment';
@@ -23,7 +25,17 @@ import 'moment-timezone'
 
 moment.tz.setDefault('Asia/Seoul');
 
-library.add(faUserSecret, faCirclePlay, faCircleStop, faMoneyBillTrendUp, faArrowUpRightFromSquare, faTrash, faFire)
+library.add(
+    faUserSecret,
+    faCirclePlay,
+    faCircleStop,
+    faMoneyBillTrendUp,
+    faArrowUpRightFromSquare,
+    faTrash,
+    faFire,
+    faPlay,
+    faStop,
+)
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axiosInstance;
