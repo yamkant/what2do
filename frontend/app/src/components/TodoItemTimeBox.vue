@@ -1,4 +1,5 @@
 <template>
+  <input type="date" />
   <div class="flex justify-end space-x-3">
     <div class="space-x-2">
       <label for="startTime" @click="setStartTimeNow" class="cursor-pointer">

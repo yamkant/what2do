@@ -35,10 +35,16 @@ export default {
       'dispElapsedMinutes': 0,
       'dispElapsedSeconds': 0,
       'elapsedTime': 0,
+      'startTime': 0,
     }
   },
   mounted() {
-    this.startTime = this.getFromSessionStorage('startTime');
+    const tmpStartTime = this.getFromSessionStorage('startTime');
+    this.isRunning = this.getFromSessionStorage('isRunning');
+    if (!(tmpStartTime && this.isRunning === 'true')) {
+      return ;
+    }
+    this.startTime = moment(tmpStartTime).toDate();
     this.isRunning = this.getFromSessionStorage('isRunning');
     this.timer = setInterval(this.updateTime, 1000);
   },
@@ -50,8 +56,7 @@ export default {
       sessionStorage.setItem(key, value);
     },
     getFromSessionStorage(key) {
-      const data = sessionStorage.getItem(key);
-      return moment(data).toDate();
+      return sessionStorage.getItem(key);
     },
     removeFromSessionStorage(key) {
       sessionStorage.removeItem(key);
