@@ -24,12 +24,9 @@
 import {
   getKoreanNow,
 } from "../libs/todo.js"
+import moment from 'moment';
 
 export default {
-  // TODO: Session Storage에 시작 시간값 저장시켜두기
-  // mounted() {
-  //   this.setTodoTimer()
-  // },
   data() {
     return {
       'isRunning': false,
@@ -40,16 +37,33 @@ export default {
       'elapsedTime': 0,
     }
   },
+  mounted() {
+    this.startTime = this.getFromSessionStorage('startTime');
+    this.isRunning = this.getFromSessionStorage('isRunning');
+    this.timer = setInterval(this.updateTime, 1000);
+  },
   props: {
     todo: Object,
   },
   methods: {
+    saveToSessionStorage(key, value) {
+      sessionStorage.setItem(key, value);
+    },
+    getFromSessionStorage(key) {
+      const data = sessionStorage.getItem(key);
+      return moment(data).toDate();
+    },
+    removeFromSessionStorage(key) {
+      sessionStorage.removeItem(key);
+    },
     start() {
       if (!confirm("타이머를 시작할까요?")) {
         return ;
       }
       this.isRunning = true;
-      this.startTime = getKoreanNow() - this.elapsedTime;
+      this.saveToSessionStorage('isRunning', this.isRunning);
+      this.startTime = getKoreanNow();
+      this.saveToSessionStorage('startTime', this.startTime);
       this.timer = setInterval(this.updateTime, 1000);
     },
     reset() {
@@ -58,10 +72,15 @@ export default {
       }
       this.dispElapsedMinutes = String(0).padStart(1, '0');
       this.dispElapsedSeconds = String(0).padStart(1, '0');
-      this.elapsedTime = 0;
       clearInterval(this.timer);
+      this.removeFromSessionStorage('startTime');
+      this.isRunning = false;
+      this.saveToSessionStorage('isRunning', this.isRunning);
     },
     updateTime() {
+      if (!this.isRunning) {
+        return ;
+      }
       this.elapsedTime = getKoreanNow() - this.startTime;
       this.elapsedSeconds = Math.floor(this.elapsedTime / 1000) % 60;
       this.dispElapsedSeconds = String(this.elapsedSeconds).padStart(2, '0');
