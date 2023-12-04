@@ -1,4 +1,6 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
+
+const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 function getKoreanNow() {
     const date = moment().toDate();
@@ -25,6 +27,17 @@ function cvtTimeStringToHMSDate(timeString) {
     return new Date(0, 0, 0, h, m, s);
 }
 
+function cvtStringToYMDString(timeString) {
+    if (!timeString) {
+        return "";
+    }
+    const date = moment(timeString).toDate();
+    const y = String(date.getFullYear()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDay()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
 function cvtStringToHMSString(timeString) {
     if (!timeString) {
         return "";
@@ -36,8 +49,26 @@ function cvtStringToHMSString(timeString) {
     return `${h}:${m}:${s}`;
 }
 
+function cvtDateToYMDString(date) {
+    const tmpStr = date.format(DATE_TIME_FORMAT);
+    return tmpStr.split('T')[0]
+}
+
+function cvtTimeFormatForRequest(dateString, timeString) {
+    const formatString = "YYYY-MM-DDTHH:mm:ss";
+
+    const momentObject = moment(dateString + 'T' + timeString, formatString);
+    const converted = momentObject.clone().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
+
+    return converted;
+}
+
 function isTimeFormat(timeString) {
     let offsetPattern = /([+-]\d{2}):(\d{2})$/;
+    if (offsetPattern.test(timeString)) {
+        return true;
+    }
+    offsetPattern = /(\d{2}):(\d{2})$/;
     if (offsetPattern.test(timeString)) {
         return true;
     }
@@ -52,16 +83,15 @@ function isTimeFormat(timeString) {
     return false;
 }
 
-function cvtTodoToRequestData(todo) {
+function cvtTodoToRequestData(todo, date=null) {
     const retData = {}
     for (let key in todo) {
         if (todo[key] && isTimeFormat(todo[key])) {
-            retData[key] = cvtStringToHMSString(todo[key]);
+            retData[key] = cvtTimeFormatForRequest(date, todo[key]);
         } else {
             retData[key] = todo[key];
         }
     }
-    console.log("REQ DATA:", retData)
     return retData;
 }
 
@@ -108,6 +138,8 @@ function getTimeTitleByDate(date) {
 export {
     getKoreanNow,
     getTimeNow,
+    cvtDateToYMDString,
+    cvtStringToYMDString,
     cvtStringToHMSString,
     cvtTodoToRequestData,
     getChartData,
