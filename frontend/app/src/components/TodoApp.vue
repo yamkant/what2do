@@ -39,9 +39,6 @@ import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
 import TodoChart from "./TodoChart.vue";
 import StopWatch from './StopWatch.vue';
-import {
-  getChartData,
-} from "../libs/todo.js"
 
 export default {
   components: {
@@ -69,7 +66,7 @@ export default {
     setTodoList() {
         this.completed_todos = this.getTodosByCompleted(this.todos, "N");
         this.uncompleted_todos = this.getTodosByCompleted(this.todos, "Y");
-        this.chart_data = getChartData(this.todos);
+        this.chart_data = this.getChartData(this.todos);
     },
     async getTodos() {
       try {
@@ -99,6 +96,55 @@ export default {
     async changeTodo(todo) {
       this.setTodoList();
     },
+
+
+    getChartData(todos) {
+        const columns = [
+            { type: 'string', id: 'todo' },
+            { type: 'string', id: 'content' },
+            { type: 'date', id: 'Start' },
+            { type: 'date', id: 'End' },
+        ];
+
+        const rows = []
+        todos.forEach((todo) => {
+            const started_at = this.cvtTimeStringToHMSDate(todo.started_at);
+            const ended_at = this.cvtTimeStringToHMSDate(todo.ended_at);
+            if (this.isValidTodoForChart(todo)) {
+                rows.push([
+                    this.getTimeTitleByDate(todo.started_at), todo.content, started_at, ended_at
+                ]);
+            }
+        });
+        return [columns, ...rows];
+    },
+    isValidTodoForChart(todo) {
+        if (!todo.started_at) {
+            return false;
+        }
+        if (!todo.ended_at) {
+            return false;
+        }
+        if (todo.completed === 'N') {
+            return false;
+        }
+        return true;
+    },
+    getTimeTitleByDate(date) {
+        const time_parts = date.split('T')
+        const ymd = time_parts[0].split('-')
+        return `${ymd[1]}-${ymd[2]}`
+    },
+    cvtTimeStringToHMSDate(timeString) {
+      if (!timeString) {
+          return null
+      }
+      const date = this.$moment(timeString).toDate();
+      const h = date.getHours();
+      const m = date.getMinutes();
+      const s = date.getSeconds();
+      return new Date(0, 0, 0, h, m, s);
+    }
   }
 };
 </script>

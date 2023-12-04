@@ -24,8 +24,8 @@
 <script>
 import axiosInstance from "../libs"
 import {
-  getTimeNow,
   cvtDateToYMDString,
+  cvtDateToHMString,
   cvtStringToYMDString,
   cvtStringToHMSString,
   cvtTodoToRequestData,
@@ -64,7 +64,7 @@ export default {
       await this.setStartTime();
     },
     async setStartTimeNow() {
-      this.startTime = getTimeNow();
+      this.startTime = cvtDateToHMString(this.$moment());
       await this.setStartTime();
     },
     async setStartTime() {
@@ -89,7 +89,7 @@ export default {
       await this.setEndTime()
     },
     async setEndTimeNow() {
-      this.endTime = getTimeNow();
+      this.endTime = cvtDateToHMString(this.$moment());
       if (!this.isValidateEndTime()) {
         return ;
       }
