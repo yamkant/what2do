@@ -9,8 +9,8 @@ class UpdateTodoRequest(BaseModel):
     content: str
     completed: str
 
-    started_at: Optional[time]
-    ended_at: Optional[time]
+    started_at: Optional[datetime]
+    ended_at: Optional[datetime]
 
 class TodoSchema(BaseModel):
     id: int
