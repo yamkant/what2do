@@ -6,8 +6,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./project .
 
-RUN pip3 install poetry
+RUN chmod +x entrypoint.sh
 
 EXPOSE 8000
-RUN poetry install
-ENTRYPOINT [ "poetry" ,"run", "uvicorn", "apps.shared_kernel.server:app", "--host", "0.0.0.0" ]
+ENTRYPOINT [ "sh", "entrypoint.sh" ]
