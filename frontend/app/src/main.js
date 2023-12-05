@@ -39,8 +39,8 @@ library.add(
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axiosInstance;
+app.config.globalProperties.$moment = moment;
 app.use(VueCookies)
-app.provide('moment', moment)
 app.use(store)
 app.use(routers)
 app.component('font-awesome-icon', FontAwesomeIcon)

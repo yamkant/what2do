@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from apps.shared_kernel.config import config
+from apps.database.config import config
 
 if config.READER_DB_URL.startswith("sqlite"):
     engine = create_engine(

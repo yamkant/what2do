@@ -1,6 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, MetaData, Table, DateTime
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
 
 from apps.todo.exception import TodoContentException
 
@@ -23,6 +24,7 @@ class Todo(Base):
     content = Column(String)
     completed = Column(String)
     deleted_at = Column(DateTime(timezone=True), default=None, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(),  default=None, nullable=True)
 
     started_at = Column(DateTime(timezone=True), default=None, nullable=True)
     ended_at = Column(DateTime(timezone=True), default=None, nullable=True)

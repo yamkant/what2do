@@ -21,9 +21,6 @@
 </template>
   
 <script>
-import {
-  getKoreanNow,
-} from "../libs/todo.js"
 import moment from 'moment';
 
 export default {
@@ -67,7 +64,7 @@ export default {
       }
       this.isRunning = true;
       this.saveToSessionStorage('isRunning', this.isRunning);
-      this.startTime = getKoreanNow();
+      this.startTime = this.$moment();
       this.saveToSessionStorage('startTime', this.startTime);
       this.timer = setInterval(this.updateTime, 1000);
     },
@@ -86,7 +83,7 @@ export default {
       if (!this.isRunning) {
         return ;
       }
-      this.elapsedTime = getKoreanNow() - this.startTime;
+      this.elapsedTime = this.$moment() - this.startTime;
       this.elapsedSeconds = Math.floor(this.elapsedTime / 1000) % 60;
       this.dispElapsedSeconds = String(this.elapsedSeconds).padStart(2, '0');
       this.elapsedMinutes = Math.floor(Math.floor(this.elapsedTime / 1000) / 60);

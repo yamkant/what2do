@@ -3,7 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.middleware import Middleware
 
-from apps.shared_kernel.config import config
+from apps.database.config import config
 from apps.shared_kernel.container import AppContainer
 from apps.shared_kernel.exception import CustomException
 

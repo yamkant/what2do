@@ -1,28 +1,16 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 
-function getKoreanNow() {
-    const date = moment().toDate();
-    return date;
-}
+const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
-function getTimeNow() {
-    const now = moment().toDate();
-    function padZero(value) {
-        return value < 10 ? `0${value}` : value;
-    }
-    const formattedDateTime = `${now.getFullYear()}-${padZero(now.getMonth() + 1)}-${padZero(now.getDate())} ${padZero(now.getHours())}:${padZero(now.getMinutes())}`;
-    return formattedDateTime.substring(formattedDateTime.length - 5)
-}
-
-function cvtTimeStringToHMSDate(timeString) {
+function cvtStringToYMDString(timeString) {
     if (!timeString) {
-        return null
+        return "";
     }
     const date = moment(timeString).toDate();
-    const h = date.getHours();
-    const m = date.getMinutes();
-    const s = date.getSeconds();
-    return new Date(0, 0, 0, h, m, s);
+    const y = String(date.getFullYear()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
 }
 
 function cvtStringToHMSString(timeString) {
@@ -36,8 +24,37 @@ function cvtStringToHMSString(timeString) {
     return `${h}:${m}:${s}`;
 }
 
+function cvtDateToYMDString(date) {
+    const tmpStr = date.format(DATE_TIME_FORMAT);
+    return tmpStr.split('T')[0]
+}
+
+function cvtDateToHMSString(date) {
+    const tmpStr = date.format(DATE_TIME_FORMAT);
+    return tmpStr.split('T')[1]
+}
+
+function cvtDateToHMString(date) {
+    const tmpStr = date.format(DATE_TIME_FORMAT);
+    const timePart = tmpStr.split('T')[1]
+    return timePart.substring(0,timePart.length - 3)
+}
+
+function cvtTimeFormatForRequest(dateString, timeString) {
+    const formatString = "YYYY-MM-DDTHH:mm:ss";
+
+    const momentObject = moment(dateString + 'T' + timeString, formatString);
+    const converted = momentObject.clone().tz('Asia/Seoul').format(formatString);
+
+    return converted;
+}
+
 function isTimeFormat(timeString) {
     let offsetPattern = /([+-]\d{2}):(\d{2})$/;
+    if (offsetPattern.test(timeString)) {
+        return true;
+    }
+    offsetPattern = /(\d{2}):(\d{2})$/;
     if (offsetPattern.test(timeString)) {
         return true;
     }
@@ -52,63 +69,24 @@ function isTimeFormat(timeString) {
     return false;
 }
 
-function cvtTodoToRequestData(todo) {
+function cvtTodoToRequestData(todo, date=null) {
     const retData = {}
     for (let key in todo) {
         if (todo[key] && isTimeFormat(todo[key])) {
-            retData[key] = cvtStringToHMSString(todo[key]);
+            retData[key] = cvtTimeFormatForRequest(date, todo[key]);
         } else {
             retData[key] = todo[key];
         }
     }
-    console.log("REQ DATA:", retData)
     return retData;
 }
 
-function getChartData(todos) {
-    const columns = [
-        { type: 'string', id: 'todo' },
-        { type: 'string', id: 'content' },
-        { type: 'date', id: 'Start' },
-        { type: 'date', id: 'End' },
-    ];
-
-    const rows = []
-    todos.forEach((todo) => {
-        const started_at = cvtTimeStringToHMSDate(todo.started_at);
-        const ended_at = cvtTimeStringToHMSDate(todo.ended_at);
-        if (isValidTodoForChart(todo)) {
-            rows.push([
-                getTimeTitleByDate(todo.started_at), todo.content, started_at, ended_at
-            ]);
-        }
-    });
-    return [columns, ...rows];
-}
-
-function isValidTodoForChart(todo) {
-    if (!todo.started_at) {
-        return false;
-    }
-    if (!todo.ended_at) {
-        return false;
-    }
-    if (todo.completed === 'N') {
-        return false;
-    }
-    return true;
-}
-
-function getTimeTitleByDate(date) {
-    const time_parts = date.split('T')
-    const ymd = time_parts[0].split('-')
-    return `${ymd[1]}-${ymd[2]}`
-}
 
 export {
-    getKoreanNow,
-    getTimeNow,
+    cvtDateToYMDString,
+    cvtDateToHMSString,
+    cvtDateToHMString,
+    cvtStringToYMDString,
     cvtStringToHMSString,
     cvtTodoToRequestData,
-    getChartData,
 }

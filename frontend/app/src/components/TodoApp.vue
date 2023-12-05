@@ -37,11 +37,9 @@
 <script>
 import AddTodo from './AddTodo.vue';
 import TodoList from './TodoList.vue';
-import TodoChart from "./TodoChart.vue";
 import StopWatch from './StopWatch.vue';
-import {
-  getChartData,
-} from "../libs/todo.js"
+import TodoChart from './TodoChart.vue';
+import GChartHelper from '../classes/GChartHelper.js';
 
 export default {
   components: {
@@ -67,9 +65,10 @@ export default {
       return todos.filter(t => t.completed !== status);
     },
     setTodoList() {
-        this.completed_todos = this.getTodosByCompleted(this.todos, "N");
-        this.uncompleted_todos = this.getTodosByCompleted(this.todos, "Y");
-        this.chart_data = getChartData(this.todos);
+      this.completed_todos = this.getTodosByCompleted(this.todos, "N");
+      this.uncompleted_todos = this.getTodosByCompleted(this.todos, "Y");
+      const gchart = new GChartHelper(this.$moment, this.todos);
+      this.chart_data = gchart.getChartData(this.todos);
     },
     async getTodos() {
       try {
