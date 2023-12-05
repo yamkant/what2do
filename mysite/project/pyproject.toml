@@ -28,7 +28,6 @@ screeninfo = "^0.8.1"
 alembic = "^1.12.1"
 pydantic-settings = "^2.1.0"
 psycopg2-binary = "^2.9.9"
-aiomysql = "^0.2.0"
 
 
 [build-system]
