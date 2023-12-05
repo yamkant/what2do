@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from apps.database import orm
 from apps.user import schema
 
-from apps.shared_kernel.config import config
+from apps.database.config import config
 
 ACCESS_TOKEN_EXPIRE_MINUTES = config.JWT_EXIPRE_MINUTES
 SECRET_KEY = config.JWT_SECRET_KEY

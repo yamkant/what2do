@@ -1,7 +1,7 @@
 import os
 import uvicorn
 
-from apps.shared_kernel.config import config
+from apps.database.config import config
 
 def main(env: str, debug: bool):
     os.environ["ENV"] = env
