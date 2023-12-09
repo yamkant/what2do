@@ -1,4 +1,5 @@
 from datetime import time
+from datetime import datetime
 from typing import Callable, ContextManager, List
 
 from sqlalchemy.orm import Query, Session
@@ -44,8 +45,7 @@ class TodoCommandUseCase:
         # TODO: 해당 유저가 todo_id의 todo를 가지는지 판단
         update_data = request.model_dump(exclude_unset=True)
         for key, value in update_data.items():
-            if isinstance(value, time):
-                value = combine_datetime_to_now(value)
+            # print(value)
             setattr(todo, key, value)
         with self.db_session() as session:
             self.todo_repo.add(session=session, instance=todo)

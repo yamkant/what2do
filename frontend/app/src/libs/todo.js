@@ -24,6 +24,21 @@ function cvtStringToHMSString(timeString) {
     return `${h}:${m}:${s}`;
 }
 
+function cvtDateStringToInputDateString(timeString) {
+    if (!timeString) {
+        return "";
+    }
+    const date = moment(timeString).toDate();
+    const y = String(date.getFullYear()).padStart(2, '0');
+    const mo = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+
+    const h = String(date.getHours()).padStart(2, '0');
+    const m = String(date.getMinutes()).padStart(2, '0');
+    // const s = String(date.getSeconds()).padStart(2, '0');
+    return `${y}-${mo}-${d} ${h}:${m}`;
+}
+
 function cvtDateToYMDString(date) {
     const tmpStr = date.format(DATE_TIME_FORMAT);
     return tmpStr.split('T')[0]
@@ -69,11 +84,11 @@ function isTimeFormat(timeString) {
     return false;
 }
 
-function cvtTodoToRequestData(todo, date=null) {
+function cvtTodoToRequestData(todo) {
     const retData = {}
     for (let key in todo) {
         if (todo[key] && isTimeFormat(todo[key])) {
-            retData[key] = cvtTimeFormatForRequest(date, todo[key]);
+            retData[key] = todo[key];
         } else {
             retData[key] = todo[key];
         }
@@ -86,6 +101,7 @@ export {
     cvtDateToYMDString,
     cvtDateToHMSString,
     cvtDateToHMString,
+    cvtDateStringToInputDateString,
     cvtStringToYMDString,
     cvtStringToHMSString,
     cvtTodoToRequestData,

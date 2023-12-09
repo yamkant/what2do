@@ -1,21 +1,27 @@
 <template>
   <div class="flex justify-end items-center space-x-3">
-    <div>
-      <input type="date" class="w-28" v-model="todoDate">
-    </div>
-    <div class="flex flex-col md:flex-row md:space-x-2">
+    <div class="flex flex-col">
       <div>
         <label for="startTime" @click="setStartTimeNow" class="cursor-pointer">
           <font-awesome-icon icon="fa-solid fa-circle-play" />
         </label>
-        <input type="time" v-model="startTime" @change="setStartTimeCustomized" class="w-24"/>
+        <input
+          type="datetime-local" v-model="startTime"
+          @change="setStartTimeCustomized"
+          class="w-48"
+        />
       </div>
 
       <div>
         <label for="endTime" @click="setEndTimeNow" class="cursor-pointer">
           <font-awesome-icon icon="fa-solid fa-circle-stop" />
         </label>
-        <input type="time" v-model="endTime" :disabled="!isEndTimeEnabled" @change="setEndTimeCustomized" class="w-24"/>
+        <input
+          type="datetime-local" v-model="endTime"
+          @change="setEndTimeCustomized"
+          :disabled="!isEndTimeEnabled"
+          class="w-48"
+        />
       </div>
     </div>
   </div>
@@ -24,27 +30,20 @@
 <script>
 import axiosInstance from "../libs"
 import {
-  cvtDateToYMDString,
-  cvtDateToHMString,
-  cvtStringToYMDString,
-  cvtStringToHMSString,
   cvtTodoToRequestData,
+  cvtDateStringToInputDateString,
 } from "../libs/todo.js"
 
 export default {
   mounted() {
-    if (!this.todo.started_at) {
-      this.todoDate = cvtDateToYMDString(this.$moment());
-    } else {
-      this.todoDate = cvtStringToYMDString(this.todo.started_at)
-    }
-    this.startTime = cvtStringToHMSString(this.todo.started_at)
-    this.endTime = cvtStringToHMSString(this.todo.ended_at)
+    this.startTime = cvtDateStringToInputDateString(this.todo.started_at)
+    this.endTime = cvtDateStringToInputDateString(this.todo.ended_at)
+    this.dispStartTime = this.startTime;
+    this.dispEndTime = this.endTime;
     this.activateEndTime()
   },
   data() {
     return {
-      'todoDate': "",
       'startTime': "",
       'endTime': "",
       'isEndTimeEnabled': false
@@ -54,6 +53,9 @@ export default {
     todo: Object,
   },
   methods: {
+    getTimeNow() {
+      return this.$moment().format('YYYY-MM-DD HH:mm')
+    },
     async activateEndTime() {
       if (this.startTime) {
         this.isEndTimeEnabled = true;
@@ -63,8 +65,9 @@ export default {
     async setStartTimeCustomized() {
       await this.setStartTime();
     },
+
     async setStartTimeNow() {
-      this.startTime = cvtDateToHMString(this.$moment());
+      this.startTime = this.getTimeNow();
       await this.setStartTime();
     },
     async setStartTime() {
@@ -77,6 +80,7 @@ export default {
         )
       ).then(() => {
         this.endTime = ""
+        this.dispStartTime = this.startTime;
       }).catch((err) => {
         console.error("Error updating todo start time:", err);
       });
@@ -89,10 +93,11 @@ export default {
       await this.setEndTime()
     },
     async setEndTimeNow() {
-      this.endTime = cvtDateToHMString(this.$moment());
+      this.endTime = this.getTimeNow();
       if (!this.isValidateEndTime()) {
         return ;
       }
+      this.endTime = this.getTimeNow();
       await this.setEndTime()
     },
     async setEndTime() {

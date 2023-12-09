@@ -51,6 +51,7 @@ async def patch_todos(
     todo_command: TodoCommandUseCase = Depends(Provide[AppContainer.todo.todo_command]),
 ):
     try:
+        print("DEBUG1=============================")
         updated_todo = todo_command.update_todo(todo_id=todo_id, request=update_todo_request, user=current_user)
     # TODO: start time보다 end time이 더 빠르면 예외 처리
     except TodoContentException as e:
